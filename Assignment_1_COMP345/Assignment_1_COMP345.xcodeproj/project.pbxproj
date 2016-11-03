@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		554A3D961DC0FE7F00234E5C /* game Item.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 554A3D941DC0FE7F00234E5C /* game Item.cpp */; };
+		558B83AB1DCA8DA800C891FF /* character.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558B83A91DCA8DA800C891FF /* character.cpp */; };
 		55D642BF1DBC2AF0009DD753 /* game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D642BD1DBC2AF0009DD753 /* game.cpp */; };
 		55D91BD51DB8291200861D5B /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D91BD41DB8291200861D5B /* main.cpp */; };
 		55D91BDF1DB8295D00861D5B /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55D91BDC1DB8295D00861D5B /* SDL2_image.framework */; };
@@ -32,6 +33,8 @@
 /* Begin PBXFileReference section */
 		554A3D941DC0FE7F00234E5C /* game Item.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "game Item.cpp"; sourceTree = "<group>"; };
 		554A3D951DC0FE7F00234E5C /* game Item.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = "game Item.hpp"; sourceTree = "<group>"; };
+		558B83A91DCA8DA800C891FF /* character.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = character.cpp; sourceTree = "<group>"; };
+		558B83AA1DCA8DA800C891FF /* character.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = character.hpp; sourceTree = "<group>"; };
 		55D642BD1DBC2AF0009DD753 /* game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = game.cpp; sourceTree = "<group>"; };
 		55D642BE1DBC2AF0009DD753 /* game.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = game.hpp; sourceTree = "<group>"; };
 		55D91BD11DB8291200861D5B /* Assignment_1_COMP345 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Assignment_1_COMP345; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -88,6 +91,8 @@
 				55D642BE1DBC2AF0009DD753 /* game.hpp */,
 				554A3D941DC0FE7F00234E5C /* game Item.cpp */,
 				554A3D951DC0FE7F00234E5C /* game Item.hpp */,
+				558B83A91DCA8DA800C891FF /* character.cpp */,
+				558B83AA1DCA8DA800C891FF /* character.hpp */,
 			);
 			path = Assignment_1_COMP345;
 			sourceTree = "<group>";
@@ -164,6 +169,7 @@
 				55D91BD51DB8291200861D5B /* main.cpp in Sources */,
 				55D642BF1DBC2AF0009DD753 /* game.cpp in Sources */,
 				554A3D961DC0FE7F00234E5C /* game Item.cpp in Sources */,
+				558B83AB1DCA8DA800C891FF /* character.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

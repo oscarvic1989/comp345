@@ -17,3 +17,7 @@ gameItem::gameItem(SDL_Renderer *renderer,SDL_Rect srcrect,
     this->image = IMG_Load(address.c_str());
     this->texture=SDL_CreateTextureFromSurface(renderer, this->image);
 }
+void gameItem::setImage(SDL_Renderer *renderer,string address){
+    this->image = IMG_Load(address.c_str());
+    this->texture=SDL_CreateTextureFromSurface(renderer, this->image);
+};

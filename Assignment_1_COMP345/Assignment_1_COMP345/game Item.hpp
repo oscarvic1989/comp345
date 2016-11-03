@@ -26,5 +26,6 @@ public:
     gameItem(SDL_Renderer *renderer,SDL_Rect srcrect,
              SDL_Rect dstrect, string address);
     gameItem();
+    void setImage(SDL_Renderer *renderer,string address);
 };
 #endif /* game_Item_hpp */

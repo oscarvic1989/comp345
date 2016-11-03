@@ -24,8 +24,8 @@
 #include "game.hpp"
 #include <SDL2_ttf/SDL_ttf.h>
 
- const int weigth=800;
- const int height=600;
+ const int weigth=900;
+ const int height=700;
 int main(int argc, const char * argv[]) {
     cout<<"start"<<endl;
     
@@ -34,11 +34,12 @@ int main(int argc, const char * argv[]) {
     SDL_Renderer *renderer=SDL_CreateRenderer(window, -1, 0);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     
-    gameMap maptest=gameMap(weigth,height,renderer);
     game gametest=game(renderer,weigth,height);
+    gametest.gamemap=gameMap(weigth,height,renderer);
+
     bool quit=false;
-    
     //test
+    /*
     TTF_Init();
     TTF_Font* Sans;
     Sans= TTF_OpenFont("/Users/oscar/Documents/xcode project/OpenSans-Light.ttf", 90); //this opens a font style and sets a size
@@ -54,34 +55,18 @@ int main(int argc, const char * argv[]) {
     Message_rect.y = 0; // controls the rect's y coordinte
     Message_rect.w = 100; // controls the width of the rect
     Message_rect.h = 100; // controls the height of the rect
-    
+    */
     while(!quit){
-    
-        while(gametest.type==type_manu){
-            SDL_RenderClear(renderer);
-            for(std::vector<gameItem>::iterator it = gametest.buttonStack.begin() ; it != gametest.buttonStack.end(); ++it){
-                SDL_RenderCopy(renderer, it->texture,&it->srcrect, &it->dstrect);
-                //Update screen
-            }
-            SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
-            SDL_RenderPresent(renderer );
-            SDL_RenderClear(renderer);
-            gametest.handleinput();
-            if(gametest.e.key.keysym.sym == SDLK_ESCAPE&&gametest.e.type == SDL_KEYDOWN)
-                quit=true;break;
-        }
+        gametest.play();
         
-        while(gametest.type==type_mapeditor){
-            SDL_RenderClear(renderer);
-            for(std::vector<mapUnit>::iterator it = maptest.mapStack.begin() ; it != maptest.mapStack.end(); ++it){
-                SDL_RenderCopy(renderer, it->texture,&it->srcrect, &it->dstrect);
-                //Update screen
-            }
-            SDL_RenderPresent(renderer);
-            SDL_RenderClear(renderer);
-            if(gametest.e.key.keysym.sym == SDLK_ESCAPE&&gametest.e.type == SDL_KEYDOWN)
-                quit=true;break;
-        }
+        SDL_RenderClear(renderer);
+        gametest.render(renderer);
+        SDL_RenderPresent(renderer );
+        SDL_RenderClear(renderer);
+        /*if(gametest.e.key.keysym.sym == SDLK_ESCAPE&&gametest.e.type == SDL_KEYDOWN)
+            quit=true;*/
     }
     return 0;
 }
+
+
