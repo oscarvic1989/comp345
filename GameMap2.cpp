@@ -39,7 +39,7 @@ GameObject* GameMap2::BlockData::getContainedItem(){
     return containedItem;
 }
 void GameMap2::BlockData::setMapType(MapType mType) {
-    mapType = mapType;
+    mapType = mType;
 }
 void GameMap2::BlockData::setGroundType(GroundType gType) {
     groundType = gType;
@@ -52,7 +52,7 @@ void GameMap2::BlockData::setContainedItem(GameObject *cItem) {
 //may need to be updated if GroundType enum is updated
 //may need to be updated if multiple forms of movement  are implemented. e.g.; flying, walking
 bool GameMap2::BlockData::canMoveInto(){
-    if(!isOccupied() ||
+    if(isOccupied() ||
        groundType == WALL ||
        groundType == WATER
        
@@ -74,16 +74,18 @@ GameMap2::GameMap2(){
     GameMap2(arrayDimensions.x,
              arrayDimensions.y,
              coordinate{0,0},
-             coordinate{arrayDimensions.x-1,arrayDimensions.y-1});
+             coordinate{arrayDimensions.x-1,arrayDimensions.y-1},
+             nullptr,
+             nullptr);
 
 }
-GameMap2::GameMap2(int w, int h, coordinate startBlock, coordinate endBlock){
+GameMap2::GameMap2(int w, int h, coordinate startBlock, coordinate endBlock, GameMap2* pMap, GameMap2* nMap){
     //set size of map
-    mapArray = new vector<vector<BlockData*>*>();
-    mapArray->resize(w);
+    mapArray = new vector<vector<BlockData*>*>(w);
+    //mapArray->resize(w);
     for(int c = 0; c < w; c++){
-        mapArray->at(c) = new vector<BlockData*>();
-        mapArray->at(c)->resize(h);
+        mapArray->at(c) = new vector<BlockData*>(h);
+        //mapArray->at(c)->resize(h);
     }
     //fill map with default blocks
     for (int r = 0; r < h; r++) {
@@ -93,8 +95,17 @@ GameMap2::GameMap2(int w, int h, coordinate startBlock, coordinate endBlock){
     }
     //set starting block
     mapArray->at(startBlock.x)->at(startBlock.y)->setMapType(MAP_START);
+    startingBlock = startBlock;
     //set ending block
     mapArray->at(endBlock.x)->at(endBlock.y)->setMapType(MAP_END);
+    endingBlock = endBlock;
+    
+    //set new array dimensions
+    arrayDimensions={w,h};
+    
+    //sets connected maps
+    this->previousMap = pMap;
+    this->nextMap = nMap;
 }
 //destructor
 GameMap2::~GameMap2(){
@@ -123,6 +134,7 @@ void GameMap2::setEndingBlock(coordinate eBlock){
     endingBlock = eBlock;
 }
 
+//get block at given coordinates
 GameMap2::BlockData* GameMap2::getBlock(int x, int y){
     coordinate block = {x,y};
     return getBlock(block);
@@ -131,16 +143,23 @@ GameMap2::BlockData* GameMap2::getBlock(coordinate block){
     if(block.x < 0 || block.x > arrayDimensions.x-1){
         return nullptr;
     }
-    if(block.y < 0 || block.x > arrayDimensions.y-1){
+    if(block.y < 0 || block.y > arrayDimensions.y-1){
         return nullptr;
     }
     return mapArray->at(block.x)->at(block.y);
 }
 
+//returns the size of the gameMap
+coordinate GameMap2::getArrayDimensions(){
+    return arrayDimensions;
+}
+
+//determines if there is a navigable path from start point to end point
 bool GameMap2::validateMap(){
     return validatePath(startingBlock, endingBlock);
 }
 
+//sets ground type of a given cell
 //needs to be updated if groundtype is update
 void GameMap2::fillcell(int x, int y, char obj){
     coordinate block = {x,y};
@@ -163,13 +182,41 @@ void GameMap2::fillcell(int x, int y, char obj){
     }
     fillcell(block, gType);
 }
+void GameMap2::fillcell(coordinate block, GroundType gType){
+    getBlock(block)->setGroundType(gType);
+}
+
+//determines if a block has a gameobject in it
 bool GameMap2::isOccupied(int x, int y){
     coordinate block = {x,y};
     return isOccupied(block);
 }
+bool GameMap2::isOccupied(coordinate block){
+    return getBlock(block)->isOccupied();
+}
+
+//add or remove a gameObject froma block
+void GameMap2::occupyBlock(coordinate block, GameObject *obj){
+    this->getBlock(block)->setContainedItem(obj);
+}
+void GameMap2::deOccupyBlock(coordinate block){
+    this->getBlock(block)->setContainedItem(nullptr);
+}
+
+
+//--Validate Path Methods--//
+//these 3 fuctions serve to help the validatePath method
 bool GameMap2::BlockData::isVisited(){
     return this->v;
 }
+void GameMap2::BlockData::resetV(){
+    this->v = false;
+}
+void GameMap2::BlockData::setVisited(){
+    this->v = true;
+}
+//determines if there is a navigable path from two points
+//does prepwork before calling validatePathHelper() which checks the path recursively
 bool GameMap2::validatePath(coordinate a, coordinate b){
     //reset v
     for(int c = 0; c < arrayDimensions.y; c++){
@@ -178,13 +225,12 @@ bool GameMap2::validatePath(coordinate a, coordinate b){
         }
     }
     return validatePathHelper(a, b);
+    
 }
-void GameMap2::BlockData::resetV(){
-    this->v = false;
-}
+//recursive part of validatePath algorithm
 bool GameMap2::validatePathHelper(coordinate a, coordinate b){
     BlockData* current = getBlock(a);
-    current->isVisited();
+    current->setVisited();
     if(a.x == b.x && a.y == b.y){
         return true;
     }
@@ -198,35 +244,30 @@ bool GameMap2::validatePathHelper(coordinate a, coordinate b){
         BlockData* left = getBlock(leftC);
         BlockData* right = getBlock(rightC);
         
-        if(right != nullptr && right->canMoveInto() && !right->isVisited()){
-            if(validatePath(rightC, b)){
+        if(right != NULL && right !=nullptr && right->canMoveInto() && !(right->isVisited())){
+            if(validatePathHelper(rightC, b)){
                 return true;
             }
         }
-        if(up != nullptr && up->canMoveInto() && !up->isVisited()){
-            if(validatePath(upC, b)){
+        if(up != NULL && up != nullptr && up->canMoveInto() && !(up->isVisited())){
+            if(validatePathHelper(upC, b)){
                 return true;
             }
         }
-        if(down != nullptr && down->canMoveInto() && !down->isVisited()){
-            if(validatePath(downC, b)){
+        if(down != NULL && down != nullptr && down->canMoveInto() && !(down->isVisited())){
+            if(validatePathHelper(downC, b)){
                 return true;
             }
         }
-        if(left != nullptr && left->canMoveInto() && !left->isVisited()){
-            if(validatePath(leftC, b)){
+        if(left != NULL && left!= nullptr && left->canMoveInto() && !(left->isVisited())){
+            if(validatePathHelper(leftC, b)){
                 return true;
             }
         }
         return false;
     }
 }
-void GameMap2::fillcell(coordinate block, GroundType gType){
-    getBlock(block)->setGroundType(gType);
-}
-bool GameMap2::isOccupied(coordinate block){
-    return getBlock(block)->isOccupied();
-}
+//--end of Validate Path Methods--//
 
 
 
