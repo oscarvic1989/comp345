@@ -20,10 +20,10 @@ enum MapType{
 };
 
 enum GroundType{ //this set is obviously incomplete and mostly given for example
-    STONE,
-    GRASS,
-    WATER,
-    WALL
+    STONE = 1,
+    GRASS = 2,
+    WATER = 3,
+    WALL = 4
 }; //additions to GroundType may require updating canMoveInto() and fillCell()
 
 struct coordinate{
@@ -66,8 +66,9 @@ private:
         bool canMoveInto();
         bool isOccupied();
         
-        //2 helper methods
+        //3 helper methods, ignore
         bool isVisited();
+        void setVisited();
         void resetV();
     };
     
@@ -77,13 +78,16 @@ private:
     coordinate startingBlock;
     coordinate endingBlock;
     
+    GameMap2* previousMap;
+    GameMap2* nextMap;
+    
     //helper method for validatePath()
     bool validatePathHelper(coordinate a, coordinate b);
     
 public:
     //constructors
     GameMap2(); //sets default size and start/end
-    GameMap2(int w, int h, coordinate startBlock, coordinate endBlock);
+    GameMap2(int w, int h, coordinate startBlock, coordinate endBlock, GameMap2* pMap, GameMap2* nMap);
     
     //destructor
     ~GameMap2();
@@ -99,6 +103,12 @@ public:
     //and alternate
     BlockData* getBlock(coordinate block);
     
+    //getter for array dimensions
+    coordinate getArrayDimensions();
+    
+    //add or remove a gameObject from a block
+    void occupyBlock(coordinate block, GameObject* obj);
+    void deOccupyBlock(coordinate block);
     
     //required methods as specified in assignment 1
     bool validateMap();
