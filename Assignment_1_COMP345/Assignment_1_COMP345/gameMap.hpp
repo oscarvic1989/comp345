@@ -35,6 +35,10 @@ public:
     bool mapValidate(std::vector<mapUnit> a,std::vector<mapUnit> b);
     bool stackContainElement(std::vector<mapUnit> a, mapUnit b);
     int totalgrid;
+    int getnH();
+    int getnV();
+    bool checkifOccpuied(SDL_Rect dstrect);
+    void setOccpuied(SDL_Rect dstrect);
 private:
     int nH;
     int nV;

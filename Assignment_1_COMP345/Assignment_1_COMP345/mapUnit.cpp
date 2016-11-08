@@ -12,7 +12,7 @@ mapUnit::mapUnit(){
 };
 
 mapUnit::mapUnit(int w,int l,SDL_Renderer *renderer,int number){
-    this->image = IMG_Load("/Users/oscar/Documents/xcode project/COMP345_Project/image/ground.jpg");
+    this->image = IMG_Load("/Users/oscar/Documents/xcode project/Assignment_1_COMP345/ground.jpg");
     this->dstrect={w,l,100,100};
     this->srcrect={0,0,128,128};
     this->texture=SDL_CreateTextureFromSurface(renderer, this->image);
@@ -55,8 +55,8 @@ mapUnit * mapUnit::getDown(){
     return this->down;
 };
 
-void mapUnit::setOccupied(bool flag){
-    this->occupied=flag;
+void mapUnit::setOccupied(){
+    this->occupied=true;
 }
 
 bool mapUnit::getOccupied(){

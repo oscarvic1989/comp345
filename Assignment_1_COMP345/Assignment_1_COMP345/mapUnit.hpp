@@ -44,7 +44,7 @@ public:
     mapUnit * getDown();
     mapUnit * getLeft();
     mapUnit * getRight();
-    void setOccupied(bool flag);
+    void setOccupied();
     bool getOccupied();
     int index;
     void setImage(char a);

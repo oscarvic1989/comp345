@@ -23,16 +23,16 @@ game::game(SDL_Renderer *renderer,int w,int h){
     gameItem temp1;
     this->type=type_manu;
     string address[4]={
-        "/Users/oscar/Documents/xcode project/Assignment_1_COMP345/button Items/menu_new_game2.png",
-        "/Users/oscar/Documents/xcode project/Assignment_1_COMP345/button Items/menu_new_game2.png",
-        "/Users/oscar/Documents/xcode project/Assignment_1_COMP345/button Items/menu_new_game3.png",
-        "/Users/oscar/Documents/xcode project/Assignment_1_COMP345/button Items/menu_new_game4.png"
+        "/Users/oscar/Documents/xcode project/Assignment_1_COMP345/button Items/newgame.png",
+        "/Users/oscar/Documents/xcode project/Assignment_1_COMP345/button Items/loadgame.png",
+        "/Users/oscar/Documents/xcode project/Assignment_1_COMP345/button Items/mapeditor.png",
+        "/Users/oscar/Documents/xcode project/Assignment_1_COMP345/button Items/exit.png"
     };
-    SDL_Rect srcrect={0,0,481,124};
+    SDL_Rect srcrect={0,0,382,157};
     SDL_Rect dstrect={(w-200)/2,h/9,w/4,h/9};
 
     for(int i=0;i<4;i++){
-        dstrect.y=80+i*h/9;
+        dstrect.y=80+i*h/9+i*45;
         temp1=gameItem(renderer,srcrect,dstrect,address[i]);
         buttonStack.push_back(temp1);
     }
@@ -71,7 +71,7 @@ void game::render(SDL_Renderer *renderer){
             SDL_RenderCopy(renderer, it->texture,&it->srcrect, &it->dstrect);
             //Update screen
         }
-         SDL_RenderCopy(renderer, this->hero.texture,&this->hero.srcrect, &this->hero.dstrect);
+        //SDL_RenderCopy(renderer, this->hero.texture,&this->hero.srcrect, &this->hero.dstrect);
         SDL_RenderCopy(renderer, this->testimage.texture,&this->testimage.srcrect, &this->testimage.dstrect);
     }
     if(this->type==type_play){
@@ -80,7 +80,7 @@ void game::render(SDL_Renderer *renderer){
             //Update screen
         }
         SDL_RenderCopy(renderer, this->hero.texture,&this->hero.srcrect, &this->hero.dstrect);
-        SDL_RenderCopy(renderer, this->testimage.texture,&this->testimage.srcrect, &this->testimage.dstrect);
+       
     }
 
 }
@@ -121,6 +121,7 @@ void game::manu_gui_event()
             }
             if(i==2){
                 this->type=type_mapeditor;
+                
                 break;
             }
         }
@@ -136,13 +137,17 @@ void game::Cmove(){
                     hero.Directioncounter=3;
                 }
                 else{
-                    if(hero.movecounter<=3)
+                    if(hero.movecounter<3)
                         hero.movecounter++;
                     else
                         hero.movecounter=0;
                     hero.Directioncounter=3;
                 }
-                hero.dstrect.y-=100;
+                if(hero.dstrect.y>=((this->gamemap.getnH()-1)*100) or &hero.dstrect.y<=0){
+                }
+                else{
+                    hero.dstrect.y-=100;
+                }
             }
             break;
         case SDLK_s:
@@ -152,13 +157,17 @@ void game::Cmove(){
                     hero.Directioncounter=2;
                 }
                 else{
-                    if(hero.movecounter<=3)
+                    if(hero.movecounter<3)
                         hero.movecounter++;
                     else
                         hero.movecounter=0;
                     hero.Directioncounter=2;
                 }
-                hero.dstrect.y+=100;
+                if(hero.dstrect.y>=((this->gamemap.getnH()-1)*100) or &hero.dstrect.y<=0){
+                }
+                else{
+                    hero.dstrect.y+=100;
+                }
             }
             break;
         case SDLK_a:
@@ -168,13 +177,17 @@ void game::Cmove(){
                     hero.Directioncounter=0;
                 }
                 else{
-                    if(hero.movecounter<=3)
+                    if(hero.movecounter<3)
                         hero.movecounter++;
                     else
                         hero.movecounter=0;
                     hero.Directioncounter=0;
                 }
-                hero.dstrect.x-=100;
+                if(hero.dstrect.x>=((this->gamemap.getnV()-1)*100) or &hero.dstrect.x<=0){
+                }
+                else{
+                    hero.dstrect.x-=100;
+                }
             }
             break;
         case SDLK_d:
@@ -184,13 +197,17 @@ void game::Cmove(){
                     hero.Directioncounter=1;
                 }
                 else{
-                    if(hero.movecounter<=3)
+                    if(hero.movecounter<3)
                         hero.movecounter++;
                     else
                         hero.movecounter=0;
                     hero.Directioncounter=1;
                 }
-                hero.dstrect.x+=100;
+                if(hero.dstrect.x>=((this->gamemap.getnV()-1)*100) or &hero.dstrect.x<=0){
+                }
+                else{
+                    hero.dstrect.x+=100;
+                }
             }
             break;
     }
@@ -201,7 +218,6 @@ void game::Cmove(){
 void game::ball()
 {
     int flag=selection();
-    string address="/Users/oscar/Documents/xcode project/Assignment_1_COMP345/button"+to_string(flag)+" copy.png";
     SDL_WaitEvent(&e);
     int x = 0, y = 0;
     SDL_GetMouseState(&x, &y);
@@ -229,8 +245,11 @@ void game::ball()
         this->testimage.dstrect.y=y;
         if(e.button.button == SDL_BUTTON_RIGHT)
         {
-            gameitem.push_back(this->testimage);
-            select=false;
+            if(!this->gamemap.checkifOccpuied(this->testimage.dstrect)){
+                gameitem.push_back(this->testimage);
+                select=false;
+                this->gamemap.setOccpuied(this->testimage.dstrect);
+            }
         }
     }
     

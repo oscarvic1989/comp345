@@ -131,3 +131,25 @@ bool gameMap::stackContainElement(std::vector<mapUnit> a, mapUnit b){
     }
     return flag;
 };
+int gameMap::getnH(){
+    return this->nH;
+}
+int gameMap::getnV(){
+    return this->nV;
+}
+bool gameMap::checkifOccpuied(SDL_Rect dstrect){
+    bool flag=false;
+    for(std::vector<mapUnit>::iterator it = this->mapStack.begin() ; it != this->mapStack.end(); ++it){
+        if(it->dstrect.x==dstrect.x and it->dstrect.y==dstrect.y){
+            flag=it->getOccupied();
+        }
+    }
+    return flag;
+}
+void gameMap::setOccpuied(SDL_Rect dstrect){
+    for(std::vector<mapUnit>::iterator it = this->mapStack.begin() ; it != this->mapStack.end(); ++it){
+        if(it->dstrect.x==dstrect.x and it->dstrect.y==dstrect.y){
+            it->setOccupied();
+        }
+    }
+}
