@@ -38,8 +38,10 @@ public:
     int getNumberVerticalElements();
     int getNumberHorizontalElements();
     bool checkifOccpuied(SDL_Rect dstrect);
-    void setOccpuied(SDL_Rect dstrect);
-    void setOccupied(SDL_Rect, bool state);
+    int setOccpuied(SDL_Rect dstrect);
+    int setOccupied(SDL_Rect, bool state);
+    void setStart(int a);
+    void setEnd(int a);
 private:
     //Nelson Edit:
     //rename nH, nV to be correct and English

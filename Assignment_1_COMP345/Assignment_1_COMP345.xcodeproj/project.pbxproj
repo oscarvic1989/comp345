@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		52D7E8791DD5161300531B2F /* campaign.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52D7E8771DD5161300531B2F /* campaign.cpp */; };
 		554A3D961DC0FE7F00234E5C /* game Item.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 554A3D941DC0FE7F00234E5C /* game Item.cpp */; };
 		558B83AB1DCA8DA800C891FF /* character.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558B83A91DCA8DA800C891FF /* character.cpp */; };
 		55D642BF1DBC2AF0009DD753 /* game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D642BD1DBC2AF0009DD753 /* game.cpp */; };
@@ -31,6 +32,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		52D7E8771DD5161300531B2F /* campaign.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = campaign.cpp; sourceTree = "<group>"; };
+		52D7E8781DD5161300531B2F /* campaign.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = campaign.hpp; sourceTree = "<group>"; };
 		554A3D941DC0FE7F00234E5C /* game Item.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "game Item.cpp"; sourceTree = "<group>"; };
 		554A3D951DC0FE7F00234E5C /* game Item.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = "game Item.hpp"; sourceTree = "<group>"; };
 		558B83A91DCA8DA800C891FF /* character.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = character.cpp; sourceTree = "<group>"; };
@@ -93,6 +96,8 @@
 				554A3D951DC0FE7F00234E5C /* game Item.hpp */,
 				558B83A91DCA8DA800C891FF /* character.cpp */,
 				558B83AA1DCA8DA800C891FF /* character.hpp */,
+				52D7E8771DD5161300531B2F /* campaign.cpp */,
+				52D7E8781DD5161300531B2F /* campaign.hpp */,
 			);
 			path = Assignment_1_COMP345;
 			sourceTree = "<group>";
@@ -168,6 +173,7 @@
 				55D91BE41DB8298000861D5B /* gameMap.cpp in Sources */,
 				55D91BD51DB8291200861D5B /* main.cpp in Sources */,
 				55D642BF1DBC2AF0009DD753 /* game.cpp in Sources */,
+				52D7E8791DD5161300531B2F /* campaign.cpp in Sources */,
 				554A3D961DC0FE7F00234E5C /* game Item.cpp in Sources */,
 				558B83AB1DCA8DA800C891FF /* character.cpp in Sources */,
 			);

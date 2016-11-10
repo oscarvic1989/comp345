@@ -153,16 +153,20 @@ bool gameMap::checkifOccpuied(SDL_Rect dstrect){
 }
 //Nelson Edit:
 //refactored this method to rely on new version, so code exists only in one place
-void gameMap::setOccpuied(SDL_Rect dstrect){
-    setOccupied(dstrect, true);
+int gameMap::setOccpuied(SDL_Rect dstrect){
+    return setOccupied(dstrect, true);
 }
-void gameMap::setOccupied(SDL_Rect dstrect, bool val){
-    for(std::vector<mapUnit>::iterator it = this->mapStack.begin() ; it != this->mapStack.end(); ++it){
-        if(it->dstrect.x==dstrect.x and it->dstrect.y==dstrect.y){
-            it->setOccupied(val);
-            //Nelson Edit:
-            //add break to exit loop
-            break;
+int gameMap::setOccupied(SDL_Rect dstrect, bool val){
+    for(int i=0;i<mapStack.size();i++){
+        if(mapStack[i].dstrect.x==dstrect.x and mapStack[i].dstrect.y==dstrect.y){
+            mapStack[i].setOccupied(val);return i;
         }
     }
+    return -1;
+}
+void gameMap::setStart(int a){
+    this->mapStack[a].STATE=MAP_START;
+}
+void gameMap::setEnd(int a){
+    this->mapStack[a].STATE=Map_END;
 }

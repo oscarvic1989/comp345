@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include "gameMap.hpp"
 #include "character.hpp"
+#include "campaign.hpp"
 //Nelson Edit:
 //added types, changed manu to mainMenu
 enum GameType {
@@ -28,8 +29,8 @@ enum GameType {
 };
 class game{
 public:
+    campaign Campaign;
     gameMap gamemap;
-    character hero;
     GameType type;
     
     //Nelson Edit:
@@ -37,9 +38,9 @@ public:
     std::vector<gameItem> mainMenuButtonStack;
     std::vector<gameItem> charSelectMenuButtonStack;
     std::vector<gameItem> mapSelectMenuButtonStack;
+    std::vector<gameItem> CampaignEditorButtonStack;
     
     std::vector<gameItem> itemeditor_map;
-    std::vector<gameItem> gameitem;
     SDL_Event e;
     SDL_Renderer *renderer;
     
@@ -51,8 +52,9 @@ public:
     void render(SDL_Renderer *renderer);
 private:
     void mainMenu_gui_event();
-    void charSelectMenuGuiEvent(); //Nelson Edit: add definition
-    void mapSelectMenuGuiEvent(); //Nelson Edit: add definition
+    void charSelectMenuGuiEvent();
+    void mapSelectMenuGuiEvent();
+    void mapEditorControlButtonsHandler();
     void Cmove();
     bool select=false;
     gameItem testimage;
@@ -79,6 +81,10 @@ private:
     gameItem scrollMessageCharacterLoad;
     gameItem scrollMessageMapLoad;
     gameItem mainBackground;
+    
+    void checkifnextMap();
+    int numberofMap = 0;
+    int currentMapCounter=0;
     
     //Nelson edit:
     // I made this variable to assist the charEditor and mapEditor types in render(). This should not be needed after refactoring properly

@@ -27,6 +27,13 @@ public:
              SDL_Rect dstrect, string address);
     gameItem();
     void setImage(SDL_Renderer *renderer,string address);
+    void setMapNumber(int a);
+    int  getMapNumber();
+    void setMapIndex(int a);
+    int getMapIndex();
+private:
+    int MapNumber;
+    int MapIndex;
     
 };
 #endif /* game_Item_hpp */

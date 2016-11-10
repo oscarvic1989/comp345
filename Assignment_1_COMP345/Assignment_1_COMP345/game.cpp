@@ -13,7 +13,8 @@ game::game(){
 }
 //button loading
 game::game(SDL_Renderer *renderer,int w,int h){
-    hero=character(renderer);
+    Campaign = campaign(renderer);
+    
     this->renderer=renderer;
     SDL_Rect srcrectTEMP={0,0,600,600};
     SDL_Rect dstrectTEMP={0,0,defaultTileSize,defaultTileSize};
@@ -40,8 +41,13 @@ game::game(SDL_Renderer *renderer,int w,int h){
     };
     const int numberMapSelectMenuButtons = 2;
     string mapSelectMenuButtonImagesAddresses[numberMapSelectMenuButtons]={
-        "resources/menu_buttons/mapSelect_default_map.png",
-        "resources/menu_buttons/mapSelect_load_map.png"
+        "resources/menu_buttons/campaignSelect_load_map.png",
+        "resources/menu_buttons/campaignSelect_create_new.png"
+    };
+    const int numberCampaignEditorButtons = 2;
+    string CampaignEditorButtons[numberCampaignEditorButtons]={
+        "resources/me_exit.png",
+        "resources/me_next.png"
     };
     
     SDL_Rect srcrect={0,0,382,157};
@@ -52,7 +58,7 @@ game::game(SDL_Renderer *renderer,int w,int h){
     
     //load main menu buttons into stack
     for(int i=0; i < numberMainMenuButtons;i++){
-        dstrect.y=80+i*h/9+i*45; //TODO: get input from Oscar to change this
+        dstrect.y=80+i*h/9+i*45;
         temp1=gameItem(renderer,srcrect,dstrect,mainMenuButtonImagesAddresses[i]);
         mainMenuButtonStack.push_back(temp1);
     }
@@ -60,17 +66,25 @@ game::game(SDL_Renderer *renderer,int w,int h){
     //
     //load char select menu buttons into stack
     for(int i=0; i< numberCharSelectMenuButtons; i++){
-        dstrect.y=i*h/9+i*45+h/4; //TODO: get input from oscar to change this
+        dstrect.y=i*h/9+i*45+h/4;
         temp1=gameItem(renderer,srcrect,dstrect,charSelectMenuButtonImagesAddresses[i]);
         charSelectMenuButtonStack.push_back(temp1);
     }
     //Nelson Edit:
     //
-    //load map select menu buttons into stack
+    //load campaign select menu buttons into stack
     for(int i=0; i< numberMapSelectMenuButtons; i++){
-        dstrect.y=i*h/9+i*45+h/4; //TODO: get input from oscar to change this
+        dstrect.y=i*h/9+i*45+h/4;
         temp1=gameItem(renderer,srcrect,dstrect,mapSelectMenuButtonImagesAddresses[i]);
         mapSelectMenuButtonStack.push_back(temp1);
+    }
+    //load campaign editor buttons into stack
+    srcrect = {0,0,191,157};
+    dstrect = {w-numberCampaignEditorButtons*2*defaultTileSize,h-defaultTileSize,defaultTileSize*2,defaultTileSize};
+    for(int i=0; i< numberCampaignEditorButtons; i++){
+        dstrect.x += i*2*defaultTileSize;
+        temp1=gameItem(renderer,srcrect,dstrect,CampaignEditorButtons[i]);
+        CampaignEditorButtonStack.push_back(temp1);
     }
     //Nelson Edit:
     //
@@ -82,7 +96,7 @@ game::game(SDL_Renderer *renderer,int w,int h){
     //load background
     this->mainBackground = gameItem(renderer, SDL_Rect{0,0,1773,1182}, SDL_Rect{0,0,w,h}, "resources/background.jpg");
     
-    
+    //load "balls"
     srcrect={0,0,600,600};
     dstrect={0,600,defaultTileSize,defaultTileSize};
     for(int i=0;i<8;i++){
@@ -101,110 +115,111 @@ void game::render(SDL_Renderer *renderer){
     //render background
     SDL_RenderCopy(renderer, this->mainBackground.texture,&this->mainBackground.srcrect, &this->mainBackground.dstrect);
     
-    
-    if(this->type==type_mainMenu){
-        for(std::vector<gameItem>::iterator it = this->mainMenuButtonStack.begin() ; it != this->mainMenuButtonStack.end(); ++it){
-            SDL_RenderCopy(renderer, it->texture,&it->srcrect, &it->dstrect);
-            //Update screen
-        }
+    switch(this->type){
+        case type_mainMenu:
+            for(std::vector<gameItem>::iterator it = this->mainMenuButtonStack.begin() ; it != this->mainMenuButtonStack.end(); ++it){
+                SDL_RenderCopy(renderer, it->texture,&it->srcrect, &it->dstrect);
+                //Update screen
+            }
+            break;
+        case type_mapeditor:
+            for(std::vector<mapUnit>::iterator it = this->gamemap.mapStack.begin() ; it != this->gamemap.mapStack.end(); ++it){
+                SDL_RenderCopy(renderer, it->texture,&it->srcrect, &it->dstrect);
+                //Update screen
+            }
+            for(std::vector<gameItem>::iterator it = this->itemeditor_map.begin() ;
+                it != this->itemeditor_map.end(); ++it){
+                it->dstrect.y=defaultTileSize*this->gamemap.getNumberVerticalElements();
+                SDL_RenderCopy(renderer, it->texture,&it->srcrect, &it->dstrect);
+                //Update screen
+            }
+            for(std::vector<gameItem>::iterator it = this->Campaign.gameitem.begin() ;
+                it != this->Campaign.gameitem.end(); ++it){
+                if(it->getMapNumber()==this->currentMapCounter){
+                    SDL_RenderCopy(renderer, it->texture,&it->srcrect, &it->dstrect);
+                }
+                //Update screen
+                
+            }
+            for(std::vector<gameItem>::iterator it = this->CampaignEditorButtonStack.begin() ;
+                it != this->CampaignEditorButtonStack.end(); ++it){
+                it->dstrect.y=defaultTileSize*this->gamemap.getNumberVerticalElements();
+                SDL_RenderCopy(renderer, it->texture,&it->srcrect, &it->dstrect);
+                //Update screen
+            }
+            //SDL_RenderCopy(renderer, this->hero.texture,&this->hero.srcrect, &this->hero.dstrect);
+            SDL_RenderCopy(renderer, this->testimage.texture,&this->testimage.srcrect, &this->testimage.dstrect);
+            break;
+        case type_play:
+            for(std::vector<mapUnit>::iterator it = this->Campaign.gameMapStack[this->currentMapCounter].mapStack.begin() ;
+                it != this->Campaign.gameMapStack[this->currentMapCounter].mapStack.end(); ++it){
+                SDL_RenderCopy(renderer, it->texture,&it->srcrect, &it->dstrect);
+                //Update screen
+            }
+            for(std::vector<gameItem>::iterator it = this->Campaign.gameitem.begin() ;
+                it != this->Campaign.gameitem.end(); ++it){
+                if(it->getMapNumber()==currentMapCounter){
+                    SDL_RenderCopy(renderer, it->texture,&it->srcrect, &it->dstrect);
+                }
+                //Update screen
+            }
+            SDL_RenderCopy(renderer, this->Campaign.hero.texture,&this->Campaign.hero.srcrect, &this->Campaign.hero.dstrect);
+            break;
+        case type_exit:
+            exit(0);
+            break;
+        case type_itemEditor:
+            //render scroll message
+            if(ccc % 2 == 0){
+                SDL_RenderCopy(renderer, this->scrollMessageItemEditor.texture, &this->scrollMessageItemEditor.srcrect, &this->scrollMessageItemEditor.dstrect);
+            }
+            else{
+                //start Yann's code here:
+                cout << "TEST" << endl;
+                char a;
+                cin >> a;
+                //end Yann's code here
+                
+                this->type = type_mainMenu;
+            }
+            ccc++;
+            break;
+        case type_characterEditor:
+            //render scroll message
+            if(ccc % 2 == 0){
+                SDL_RenderCopy(renderer, this->scrollMessageCharacterEditor.texture, &this->scrollMessageCharacterEditor.srcrect, &this->scrollMessageCharacterEditor.dstrect);
+            }
+            else{
+                //start Wan's code here:
+                cout << "TEST" << endl;
+                char a;
+                cin >> a;
+                //end Wan's code here
+                
+                this->type = type_mainMenu;
+            }
+            ccc++;
+            break;
+        case type_characterSelector:
+            //add selector menu and input and stuff
+            for(std::vector<gameItem>::iterator it = this->charSelectMenuButtonStack.begin() ; it != this->charSelectMenuButtonStack.end(); ++it){
+                SDL_RenderCopy(renderer, it->texture,&it->srcrect, &it->dstrect);
+                //Update screen
+            }
+            break;
+        case type_mapSelector:
+            //add selector menu and input and stuff
+            for(std::vector<gameItem>::iterator it = this->mapSelectMenuButtonStack.begin() ; it != this->mapSelectMenuButtonStack.end(); ++it){
+                SDL_RenderCopy(renderer, it->texture,&it->srcrect, &it->dstrect);
+                //Update screen
+            }
+            //transtion to game selector
+            break;
+        case type_characterFileLoad:
+            //TODO
+            break;
+        default: std::cerr << "This code should never execute. In render()" << std::endl;
     }
-    else if(this->type==type_mapeditor){
-        for(std::vector<mapUnit>::iterator it = this->gamemap.mapStack.begin() ; it != this->gamemap.mapStack.end(); ++it){
-            SDL_RenderCopy(renderer, it->texture,&it->srcrect, &it->dstrect);
-            //Update screen
-        }
-        for(std::vector<gameItem>::iterator it = this->itemeditor_map.begin() ;
-            it != this->itemeditor_map.end(); ++it){
-            SDL_RenderCopy(renderer, it->texture,&it->srcrect, &it->dstrect);
-            //Update screen
-        }
-        for(std::vector<gameItem>::iterator it = this->gameitem.begin() ;
-            it != this->gameitem.end(); ++it){
-            SDL_RenderCopy(renderer, it->texture,&it->srcrect, &it->dstrect);
-            //Update screen
-        }
-        //SDL_RenderCopy(renderer, this->hero.texture,&this->hero.srcrect, &this->hero.dstrect);
-        SDL_RenderCopy(renderer, this->testimage.texture,&this->testimage.srcrect, &this->testimage.dstrect);
-    }
-    else if(this->type==type_play){
-        for(std::vector<mapUnit>::iterator it = this->gamemap.mapStack.begin() ; it != this->gamemap.mapStack.end(); ++it){
-            SDL_RenderCopy(renderer, it->texture,&it->srcrect, &it->dstrect);
-            //Update screen
-        }
-        SDL_RenderCopy(renderer, this->hero.texture,&this->hero.srcrect, &this->hero.dstrect);
-       
-    }
-    //Nelson Edit:
-    //added ability to quit game with quit button
-    else if(this->type == type_exit){
-        exit(0);
-    }
-    //TODO
-    else if(this->type == type_itemEditor){
-        //render scroll message
-        if(ccc % 2 == 0){
-            SDL_RenderCopy(renderer, this->scrollMessageItemEditor.texture, &this->scrollMessageItemEditor.srcrect, &this->scrollMessageItemEditor.dstrect);
-        }
-        else{
-            //start Yann's code here:
-            cout << "TEST" << endl;
-            char a;
-            cin >> a;
-            //end Yann's code here
-            
-            this->type = type_mainMenu;
-        }
-        ccc++;
-    }
-    else if(this->type == type_characterEditor){
-        //render scroll message
-        if(ccc % 2 == 0){
-            SDL_RenderCopy(renderer, this->scrollMessageCharacterEditor.texture, &this->scrollMessageCharacterEditor.srcrect, &this->scrollMessageCharacterEditor.dstrect);
-        }
-        else{
-            //start Wan's code here:
-            cout << "TEST" << endl;
-            char a;
-            cin >> a;
-            //end Wan's code here
-            
-            this->type = type_mainMenu;
-        }
-        ccc++;
-    }
-    else if(this->type == type_characterSelector){
-        //add selector menu and input and stuff
-        for(std::vector<gameItem>::iterator it = this->charSelectMenuButtonStack.begin() ; it != this->charSelectMenuButtonStack.end(); ++it){
-            SDL_RenderCopy(renderer, it->texture,&it->srcrect, &it->dstrect);
-            //Update screen
-        }
-        //transition to map selector
-    }
-    else if(this->type == type_mapSelector){
-        //add selector menu and input and stuff
-        for(std::vector<gameItem>::iterator it = this->mapSelectMenuButtonStack.begin() ; it != this->mapSelectMenuButtonStack.end(); ++it){
-            SDL_RenderCopy(renderer, it->texture,&it->srcrect, &it->dstrect);
-            //Update screen
-        }
-        //transtion to game selector
-    }
-    else if(this->type == type_mapFileLoad){
-        //render scroll message
-        if(ccc % 2 == 0){
-            SDL_RenderCopy(renderer, this->scrollMessageMapLoad.texture, &this->scrollMessageMapLoad.srcrect, &this->scrollMessageMapLoad.dstrect);
-        }
-        else{
-            //start Map load code here:
-            cout << "TEST" << endl;
-            char a;
-            cin >> a;
-            //end Map load code here
-            
-            this->type = type_mainMenu;
-        }
-        ccc++;
-    }
-
 }
 void game::handleinput(){
     //Nelson Edit:
@@ -223,7 +238,7 @@ void game::handleinput(){
         case type_mapeditor:
             ball();
             selection();
-            Cmove();
+            mapEditorControlButtonsHandler();
             break;
         case type_play:
             Cmove();
@@ -321,16 +336,17 @@ void game::charSelectMenuGuiEvent(){
     if(inside){
         switch(i){
             case 0:
-                //TODO: load the default map;
+                //TODO: load the default character;
                 break;
             case 1:
-                //TODO get path to map from file and load that
+                //TODO get path to character from file and load that
                 break;
             default: std::cerr << "Error selecting button." << std::endl; break;
+                
         }
         this->type = type_mapSelector;
     }
-    SDL_FlushEvent(1026); //Fixes specific bug which would cause things to trigger twice.
+    SDL_FlushEvents(1025,1026); //Fixes specific bug which would cause things to trigger twice.
 }
 void game::mapSelectMenuGuiEvent(){
     SDL_WaitEvent(&e);
@@ -351,17 +367,211 @@ void game::mapSelectMenuGuiEvent(){
     }
     if(inside){
         switch(i){
-            case 0:
-                //TODO: load the default character;
-                break;
             case 1:
-                //TODO get path to character from file and load that
+            {
+                cout <<"Please enter the name of new campaign";
+                string name;
+                cin>>name;
+                this->Campaign.setName(name);
+                
+                cout<<"Please enter the width of the new Map"<<endl;
+                int tempw=0;
+                cin>>tempw;
+                cout<<"Please enter the height of the new Map"<<endl;
+                int temph=0;
+                cin>>temph;
+                this->gamemap=gameMap(tempw,temph,this->renderer);
+                this->type = type_mapeditor;
+            }
                 break;
+            case 0:
+                {
+                    //start Map load code here:
+                    cout <<"Please choose the campaign";
+                    string name;
+                    cin>>name;
+                    this->Campaign.setName(name);
+                    
+                    std::ifstream inputfile ("resources/campaign/"+this->Campaign.getName()+".txt");
+                    std::string line;
+                    while (std::getline(inputfile, line))
+                    {
+                        this->Campaign.mapNameStack.push_back(line);
+                    }
+                    inputfile.close();
+                    for(int i=0;i<this->Campaign.mapNameStack.size();i++){
+                        inputfile =std::ifstream("resources/save_maps/"+this->Campaign.mapNameStack[i]+".txt");
+                        int m,n;
+                        int a,b;
+                        inputfile>>m>>n;
+                        a=m;
+                        b=n;
+                        gameMap testmap1=gameMap(a*defaultTileSize, b*defaultTileSize, renderer);
+                        inputfile>>m;
+                        a=m;
+                        testmap1.setStart(a);
+                        this->Campaign.hero.dstrect=testmap1.mapStack[a].dstrect;
+                        inputfile>>n;
+                        b=n;
+                        testmap1.setEnd(b);
+                        bool flag=true;
+                        while(flag){
+                            inputfile>>m>>n;
+                            a=m;b=n;
+                            if(a==9999 or b==9999)
+                                break;
+                            else if(n==1)
+                                testmap1.mapStack[a].setOccupied();
+                        }
+                        this->Campaign.gameMapStack.push_back(testmap1);
+                        while(inputfile>>n){
+                            SDL_Rect srcrectTEMP={0,0,600,600};
+                            gameItem testimage=gameItem(renderer, srcrectTEMP,
+                                                        testmap1.mapStack[n].dstrect, "resources/ball.png");
+                            this->Campaign.gameitem.push_back(testimage);
+                        }
+                        this->type = type_play;
+                    }
+    
+                    break;
+                }
             default: std::cerr << "Error selecting button." << std::endl; break;
         }
-        this->type = type_play;
     }
     SDL_FlushEvent(1026); //Fixes specific bug which would cause things to trigger twice.
+}
+void game::mapEditorControlButtonsHandler(){
+    SDL_WaitEvent(&e);
+    bool inside = false;
+    int x, y;
+    x = e.motion.x;
+    y = e.motion.y;
+    
+    int i = 0;
+    if(e.button.button == SDL_BUTTON_LEFT && e.button.state == SDL_RELEASED){
+        for(i = 0; i <this->CampaignEditorButtonStack.size();i++){
+            inside = checkifinside(x,y, CampaignEditorButtonStack[i].dstrect);
+            if(inside){
+                break;
+            }
+        }
+        
+    }
+    if(inside){
+        switch(i){
+            case 0:
+            {
+                cout<<"Please enter the name of the map:";
+                string temp;
+                cin>>temp;
+                std::ofstream outfile ("resources/save_maps/"+temp+".txt");
+                if(outfile.is_open()){
+                    outfile<<this->gamemap.getNumberHorizontalElements()<<" "<<this->gamemap.getNumberVerticalElements()<<endl;
+                    for(int i=0;i<this->gamemap.mapStack.size();i++){
+                        if(this->gamemap.mapStack[i].STATE==MAP_START)
+                            outfile<<i<<endl;
+                    }
+                    for(int i=0;i<this->gamemap.mapStack.size();i++){
+                        if(this->gamemap.mapStack[i].STATE==Map_END)
+                            outfile<<i<<endl;
+                    }
+                    for(int i=0;i<this->gamemap.mapStack.size();i++){
+                        outfile<<i<<" "<<
+                        this->gamemap.mapStack[i].isOccupied()<<endl;
+                    }
+                    outfile<<"9999"<<endl;
+                    for(int j=0;j<this->Campaign.gameitem.size();j++){
+                        if(this->Campaign.gameitem[j].getMapNumber()==this->currentMapCounter)
+                            outfile<<this->currentMapCounter<<" "
+                            <<this->Campaign.gameitem[j].getMapIndex()<<endl;
+                    }
+                }
+                outfile.close();
+                cout<<"Please enter the start point of the map";
+                int temppoint;
+                cin >> temppoint;
+                this->gamemap.setStart(temppoint);
+                cout<<"Please enter the end point of the map";
+                cin >> temppoint;
+                this->gamemap.setEnd(temppoint);
+                
+                this->Campaign.mapNameStack.push_back(temp);
+                this->Campaign.gameMapStack.push_back(this->gamemap);
+                this->numberofMap=this->Campaign.gameMapStack.size();
+                
+                std::ofstream outfile2 ("campaign/"+this->Campaign.getName()+".txt");
+                if(outfile2.is_open()){
+                    for(int i=0;i<this->Campaign.mapNameStack.size();i++){
+                        outfile2<<i<<" "<<
+                        this->Campaign.mapNameStack[i]<<endl;
+                    }
+                    outfile2<<"end of file"<<endl;
+                }
+                outfile2.close();
+                this->currentMapCounter=0;
+                this->type=type_mainMenu;
+
+            }
+                break;
+            case 1:
+            {
+                int w=0;
+                int h=0;
+                
+                cout<<"Please enter the name of the map:";
+                string temp;
+                cin>>temp;
+                std::ofstream outfile ("resources/save_maps/"+temp+".txt");
+                if(outfile.is_open()){
+                    outfile<<this->gamemap.getNumberHorizontalElements()<<" "<<this->gamemap.getNumberVerticalElements()<<endl;
+                    for(int i=0;i<this->gamemap.mapStack.size();i++){
+                        if(this->gamemap.mapStack[i].STATE==MAP_START)
+                            outfile<<i<<endl;
+                    }
+                    for(int i=0;i<this->gamemap.mapStack.size();i++){
+                        if(this->gamemap.mapStack[i].STATE==Map_END)
+                            outfile<<i<<endl;
+                    }
+                    for(int i=0;i<this->gamemap.mapStack.size();i++){
+                        outfile<<i<<" "<<
+                        this->gamemap.mapStack[i].isOccupied()<<endl;
+                    }
+                    outfile<<"end of Map"<<endl;
+                    for(int j=0;j<this->Campaign.gameitem.size();j++){
+                        if(this->Campaign.gameitem[j].getMapNumber()==this->currentMapCounter)
+                            outfile<<this->Campaign.gameitem[j].getMapIndex()<<endl;
+                    }
+                }
+                outfile.close();
+                
+                cout<<"Please enter the start point of the map";
+                int temppoint;
+                cin >> temppoint;
+                this->gamemap.setStart(temppoint);
+                cout<<"Please enter the end point of the map";
+                cin >> temppoint;
+                this->gamemap.setEnd(temppoint);
+                
+                this->Campaign.mapNameStack.push_back(temp);
+                this->Campaign.gameMapStack.push_back(this->gamemap);
+                this->numberofMap=this->Campaign.gameMapStack.size();
+                
+                cout<<"Please enter the width new map";
+                cin>>w;
+                cout<<"Please enter the height new map";
+                cin>>h;
+                if(w >100 and h>100){
+                    this->gamemap=gameMap(w,h,renderer);
+                }
+                this->currentMapCounter++;
+                this->testimage.setImage(renderer,"");
+            }
+                break;
+            default: std::cerr << "Error selecting button." << std::endl; break;
+                
+        }
+    }
+    SDL_FlushEvents(1025,1026); //Fixes specific bug which would cause things to trigger twice.
 }
 
 void game::Cmove(){
@@ -376,13 +586,13 @@ void game::Cmove(){
                 
                 //check if within map bounds
                 bool withinMapBounds = false;
-                if(hero.dstrect.y > 0){
+                if(this->Campaign.hero.dstrect.y > 0){
                     withinMapBounds = true;
                 }
                 
                 //check if next block is occupied
                 bool nextIsNotOccupied = false;
-                SDL_Rect nextRect = hero.dstrect; nextRect.y -= defaultTileSize;
+                SDL_Rect nextRect = this->Campaign.hero.dstrect; nextRect.y -= defaultTileSize;
                 if(! this->gamemap.checkifOccpuied(nextRect) ){
                     nextIsNotOccupied = true;
                 }
@@ -392,14 +602,14 @@ void game::Cmove(){
                     //set next block to occupied (by hero)
                     this->gamemap.setOccpuied(nextRect);
                     //set current block to unoccupied
-                    this->gamemap.setOccupied(hero.dstrect, false);
+                    this->gamemap.setOccupied(this->Campaign.hero.dstrect, false);
                     
                     //move hero
-                    hero.dstrect.y -= defaultTileSize;
+                    this->Campaign.hero.dstrect.y -= defaultTileSize;
                 }
                 
                 //set character's facing direction
-                hero.Directioncounter = 3;
+                this->Campaign.hero.Directioncounter = 3;
             }
             break;
         case SDLK_DOWN: //execute code in next case
@@ -407,13 +617,13 @@ void game::Cmove(){
             if(e.type == SDL_KEYDOWN){
                 //check if within map bounds
                 bool withinMapBounds = false;
-                if(hero.dstrect.y < (this->gamemap.getNumberVerticalElements()-1)*defaultTileSize){
+                if(this->Campaign.hero.dstrect.y < (this->gamemap.getNumberVerticalElements()-1)*defaultTileSize){
                     withinMapBounds = true;
                 }
                 
                 //check if next block is occupied
                 bool nextIsNotOccupied = false;
-                SDL_Rect nextRect = hero.dstrect; nextRect.y += defaultTileSize;
+                SDL_Rect nextRect = this->Campaign.hero.dstrect; nextRect.y += defaultTileSize;
                 if(! this->gamemap.checkifOccpuied(nextRect) ){
                     nextIsNotOccupied = true;
                 }
@@ -423,14 +633,14 @@ void game::Cmove(){
                     //set next block to occupied (by hero)
                     this->gamemap.setOccpuied(nextRect);
                     //set current block to unoccupied
-                    this->gamemap.setOccupied(hero.dstrect, false);
+                    this->gamemap.setOccupied(this->Campaign.hero.dstrect, false);
                     
                     //move hero
-                    hero.dstrect.y += defaultTileSize;
+                    this->Campaign.hero.dstrect.y += defaultTileSize;
                 }
                 
                 //set character's facing direction
-                hero.Directioncounter = 2;
+                this->Campaign.hero.Directioncounter = 2;
             }
             break;
         case SDLK_LEFT: //execute code in next case
@@ -439,13 +649,13 @@ void game::Cmove(){
                 
                 //check if within map bounds
                 bool withinMapBounds = false;
-                if(hero.dstrect.x > 0){
+                if(this->Campaign.hero.dstrect.x > 0){
                     withinMapBounds = true;
                 }
                 
                 //check if next block is occupied
                 bool nextIsNotOccupied = false;
-                SDL_Rect nextRect = hero.dstrect; nextRect.x -= defaultTileSize;
+                SDL_Rect nextRect = this->Campaign.hero.dstrect; nextRect.x -= defaultTileSize;
                 if(! this->gamemap.checkifOccpuied(nextRect) ){
                     nextIsNotOccupied = true;
                 }
@@ -455,14 +665,14 @@ void game::Cmove(){
                     //set next block to occupied (by hero)
                     this->gamemap.setOccpuied(nextRect);
                     //set current block to unoccupied
-                    this->gamemap.setOccupied(hero.dstrect, false);
+                    this->gamemap.setOccupied(this->Campaign.hero.dstrect, false);
                     
                     //move hero
-                    hero.dstrect.x -= defaultTileSize;
+                    this->Campaign.hero.dstrect.x -= defaultTileSize;
                 }
                 
                 //set character's facing direction
-                hero.Directioncounter = 0;
+                this->Campaign.hero.Directioncounter = 0;
             }
             break;
         case SDLK_RIGHT: //execute code in next case
@@ -471,13 +681,13 @@ void game::Cmove(){
                 
                 //check if within map bounds
                 bool withinMapBounds = false;
-                if(hero.dstrect.x < (this->gamemap.getNumberHorizontalElements()-1)*defaultTileSize){
+                if(this->Campaign.hero.dstrect.x < (this->gamemap.getNumberHorizontalElements()-1)*defaultTileSize){
                     withinMapBounds = true;
                 }
                 
                 //check if next block is occupied
                 bool nextIsNotOccupied = false;
-                SDL_Rect nextRect = hero.dstrect; nextRect.x += defaultTileSize;
+                SDL_Rect nextRect = this->Campaign.hero.dstrect; nextRect.x += defaultTileSize;
                 if(! this->gamemap.checkifOccpuied(nextRect) ){
                     nextIsNotOccupied = true;
                 }
@@ -487,25 +697,25 @@ void game::Cmove(){
                     //set next block to occupied (by hero)
                     this->gamemap.setOccpuied(nextRect);
                     //set current block to unoccupied
-                    this->gamemap.setOccupied(hero.dstrect, false);
+                    this->gamemap.setOccupied(this->Campaign.hero.dstrect, false);
                     
                     //move hero
-                    hero.dstrect.x += defaultTileSize;
+                    this->Campaign.hero.dstrect.x += defaultTileSize;
                 }
                 
                 //set character's facing direction
-                hero.Directioncounter = 1;
+                this->Campaign.hero.Directioncounter = 1;
             }
             break;
     }
     //update move counter if a button was pressed
     if(e.type == SDL_KEYDOWN){
-        hero.movecounter = (hero.movecounter + 1) % 4;
+        this->Campaign.hero.movecounter = (this->Campaign.hero.movecounter + 1) % 4;
     }
     
     //select appropriate sprite
-    hero.srcrect.x=hero.movecounter*hero.movestep;
-    hero.srcrect.y=hero.Directioncounter*hero.movestep;
+    this->Campaign.hero.srcrect.x=this->Campaign.hero.movecounter*this->Campaign.hero.movestep;
+    this->Campaign.hero.srcrect.y=this->Campaign.hero.Directioncounter*this->Campaign.hero.movestep;
     
     }
 
@@ -517,8 +727,8 @@ void game::ball(){
     if(flag!=-1&&select){
         x=x/defaultTileSize*defaultTileSize;
         y=y/defaultTileSize*defaultTileSize;
-        if(y>500)
-            y=500;
+        if(y>defaultTileSize*(this->gamemap.getNumberVerticalElements()-1))
+            y=defaultTileSize*(this->gamemap.getNumberVerticalElements()-1);
         this->testimage.dstrect.x=x;
         this->testimage.dstrect.y=y;
         this->testimage.setImage(this->renderer, address2[flag]);
@@ -526,21 +736,25 @@ void game::ball(){
         {
             flag=-1;
             select=false;
-            gameitem.push_back(this->testimage);
+            this->testimage.setMapNumber(this->currentMapCounter);
+            this->testimage.setMapIndex(this->gamemap.setOccpuied(this->testimage.dstrect));
+            this->Campaign.gameitem.push_back(this->testimage);
         }
     }
     else if(select&&flag==-1){
         x=x/defaultTileSize*defaultTileSize;
         y=y/defaultTileSize*defaultTileSize;
-        if(y>500)
-            y=500;
+        if(y>defaultTileSize*(this->gamemap.getNumberVerticalElements()-1))
+            y=defaultTileSize*(this->gamemap.getNumberVerticalElements()-1);
         this->testimage.dstrect.x=x;
         this->testimage.dstrect.y=y;
         if(e.button.button == SDL_BUTTON_RIGHT)
         {
             if(!this->gamemap.checkifOccpuied(this->testimage.dstrect)){
-                gameitem.push_back(this->testimage);
+                this->Campaign.gameitem.push_back(this->testimage);
                 select=false;
+                this->testimage.setMapNumber(this->currentMapCounter);
+                this->testimage.setMapIndex(this->gamemap.setOccpuied(this->testimage.dstrect));
                 this->gamemap.setOccpuied(this->testimage.dstrect);
             }
         }
@@ -554,7 +768,7 @@ int game::selection(){
     SDL_GetMouseState(&x, &y);
     x = x / defaultTileSize*defaultTileSize; //truncate to integer
     y = y / defaultTileSize*defaultTileSize; //truncate to integer
-    if(y > 500 && (e.button.button == SDL_BUTTON_LEFT) )
+    if(y > defaultTileSize*(this->gamemap.getNumberVerticalElements()-1) && (e.button.button == SDL_BUTTON_LEFT) ) //500
     {
         //For tracing: cout<<x/defaultTileSize;
         select = true;
