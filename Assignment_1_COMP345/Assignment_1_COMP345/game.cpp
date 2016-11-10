@@ -208,6 +208,13 @@ void game::render(SDL_Renderer *renderer){
 }
 void game::handleinput(){
     //Nelson Edit:
+    //add ability to quit with exit button
+    if(e.type == SDL_QUIT){
+        exit(0);
+    }
+    
+    
+    //Nelson Edit:
     //changed to switch statement, added some cases
     switch (this->type) {
         case type_mainMenu:
