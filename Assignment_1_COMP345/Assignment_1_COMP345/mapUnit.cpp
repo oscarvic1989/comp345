@@ -12,7 +12,9 @@ mapUnit::mapUnit(){
 };
 
 mapUnit::mapUnit(int w,int l,SDL_Renderer *renderer,int number){
-    this->image = IMG_Load("/Users/oscar/Documents/xcode project/Assignment_1_COMP345/ground.jpg");
+    //Nelson Edit:
+    //changed file path
+    this->image = IMG_Load("resources/ground.jpg");
     this->dstrect={w,l,100,100};
     this->srcrect={0,0,128,128};
     this->texture=SDL_CreateTextureFromSurface(renderer, this->image);

@@ -24,6 +24,7 @@
 #include "game.hpp"
 #include <SDL2_ttf/SDL_ttf.h>
 
+
  const int weigth=900;
  const int height=700;
 int main(int argc, const char * argv[]) {
