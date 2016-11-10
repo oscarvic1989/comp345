@@ -9,44 +9,46 @@
 #include "gameMap.hpp"
 #include <iostream>
 
+
+
 gameMap::gameMap(){
 }
 //mapuint :20*20
 gameMap::gameMap(int width, int length,SDL_Renderer *renderer){
     int index=1;
-    for(int i=0;i*100<length-100;i++){
-        for(int j=0;j*100<width;j++){
-            mapUnit temp=*new mapUnit(j*100,i*100,renderer,index);
+    for(int i=0;i*defaultTileSize<length-defaultTileSize;i++){
+        for(int j=0;j*defaultTileSize<width;j++){
+            mapUnit temp=*new mapUnit(j*defaultTileSize,i*defaultTileSize,renderer,index);
             this->mapStack.push_back(temp);
-            this->nV=j;
+            this->numberHorizontalElements=j;
             index++;
         }
-        this->nH=i;
+        this->numberVerticalElements=i;
     }
-    this->nH++;
-    this->nV++;
-    this->totalgrid=this->nH*this->nV;
+    this->numberVerticalElements++;
+    this->numberHorizontalElements++;
+    this->totalgrid=this->numberVerticalElements*this->numberHorizontalElements;
     setOrder();
 }
 void gameMap::setOrder(){
-    for(int i=0;i<this->nH;i++){
-        for(int j=i*this->nV;j<i*this->nV+this->nV-1;j++){
+    for(int i=0;i<this->numberVerticalElements;i++){
+        for(int j=i*this->numberHorizontalElements;j<i*this->numberHorizontalElements+this->numberHorizontalElements-1;j++){
             mapStack[j].setRight(&mapStack[j+1]);
         }
     }
-    for(int i=this->nH-1;i>=0;i--){
-        for(int j=(this->nV-1);j>0;j--){
-            mapStack[i*this->nV+j].setLeft(&mapStack[i*this->nV+j-1]);
+    for(int i=this->numberVerticalElements-1;i>=0;i--){
+        for(int j=(this->numberHorizontalElements-1);j>0;j--){
+            mapStack[i*this->numberHorizontalElements+j].setLeft(&mapStack[i*this->numberHorizontalElements+j-1]);
         }
     }
-    for(int i=0;i<this->nV;i++){
-        for(int j=0;j<this->nH-1;j++){
-            mapStack[j*(this->nV-1)+i].setDown(&mapStack[j*(this->nV-1)+i+8]);
+    for(int i=0;i<this->numberHorizontalElements;i++){
+        for(int j=0;j<this->numberVerticalElements-1;j++){
+            mapStack[j*(this->numberHorizontalElements-1)+i].setDown(&mapStack[j*(this->numberHorizontalElements-1)+i+8]);
         }
     }
-    for(int i=this->nV-1;i>=0;i--){
-        for(int j=this->nH-1;j>0;j--){
-            mapStack[j*(this->nV)+i].setUp(&mapStack[j*(this->nV)+i-8]);
+    for(int i=this->numberHorizontalElements-1;i>=0;i--){
+        for(int j=this->numberVerticalElements-1;j>0;j--){
+            mapStack[j*(this->numberHorizontalElements)+i].setUp(&mapStack[j*(this->numberHorizontalElements)+i-8]);
         }
     }
 }
@@ -82,10 +84,10 @@ bool gameMap::mapValidate(std::vector<mapUnit> a,std::vector<mapUnit> b){
     mapUnit temp=a.back();
     a.pop_back();
     std::cout<<temp.getIndex()<<"\n";
-    if(temp.getOccupied()==true){
+    if(temp.isOccupied()==true){
         flag=mapValidate(a,b) or flag;
     }
-    if(temp.getOccupied()==false&&temp.STATE!=Map_END){
+    if(temp.isOccupied()==false&&temp.STATE!=Map_END){
         if(temp.getRight()!=NULL){
             if(!stackContainElement(b,*temp.getRight()))
             {
@@ -116,7 +118,7 @@ bool gameMap::mapValidate(std::vector<mapUnit> a,std::vector<mapUnit> b){
         }
         flag=mapValidate(a,b) or flag;
     }
-    else if(temp.getOccupied()==false&&temp.STATE==Map_END)
+    else if(temp.isOccupied()==false&&temp.STATE==Map_END)
         flag=true;
     return flag;
 };
@@ -131,25 +133,36 @@ bool gameMap::stackContainElement(std::vector<mapUnit> a, mapUnit b){
     }
     return flag;
 };
-int gameMap::getnH(){
-    return this->nH;
+int gameMap::getNumberVerticalElements(){
+    return this->numberVerticalElements;
 }
-int gameMap::getnV(){
-    return this->nV;
+int gameMap::getNumberHorizontalElements(){
+    return this->numberHorizontalElements;
 }
 bool gameMap::checkifOccpuied(SDL_Rect dstrect){
     bool flag=false;
     for(std::vector<mapUnit>::iterator it = this->mapStack.begin() ; it != this->mapStack.end(); ++it){
         if(it->dstrect.x==dstrect.x and it->dstrect.y==dstrect.y){
-            flag=it->getOccupied();
+            flag=it->isOccupied();
+            //Nelson Edit:
+            //add break to exit loop
+            break;
         }
     }
     return flag;
 }
+//Nelson Edit:
+//refactored this method to rely on new version, so code exists only in one place
 void gameMap::setOccpuied(SDL_Rect dstrect){
+    setOccupied(dstrect, true);
+}
+void gameMap::setOccupied(SDL_Rect dstrect, bool val){
     for(std::vector<mapUnit>::iterator it = this->mapStack.begin() ; it != this->mapStack.end(); ++it){
         if(it->dstrect.x==dstrect.x and it->dstrect.y==dstrect.y){
-            it->setOccupied();
+            it->setOccupied(val);
+            //Nelson Edit:
+            //add break to exit loop
+            break;
         }
     }
 }

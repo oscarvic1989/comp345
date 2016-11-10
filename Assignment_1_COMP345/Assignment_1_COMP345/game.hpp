@@ -79,6 +79,10 @@ private:
     gameItem scrollMessageCharacterLoad;
     gameItem scrollMessageMapLoad;
     gameItem mainBackground;
+    
+    //Nelson edit:
+    // I made this variable to assist the charEditor and mapEditor types in render(). This should not be needed after refactoring properly
+    //the name is totally arbitrary
     int ccc = 0;
 };
 

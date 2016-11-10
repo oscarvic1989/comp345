@@ -15,7 +15,7 @@ mapUnit::mapUnit(int w,int l,SDL_Renderer *renderer,int number){
     //Nelson Edit:
     //changed file path
     this->image = IMG_Load("resources/ground.jpg");
-    this->dstrect={w,l,100,100};
+    this->dstrect={w,l,defaultTileSize,defaultTileSize};
     this->srcrect={0,0,128,128};
     this->texture=SDL_CreateTextureFromSurface(renderer, this->image);
     this->index=number;
@@ -60,8 +60,15 @@ mapUnit * mapUnit::getDown(){
 void mapUnit::setOccupied(){
     this->occupied=true;
 }
+//Nelson Edit:
+//added below method
+void mapUnit::setOccupied(bool val){
+    this->occupied = val;
+}
 
-bool mapUnit::getOccupied(){
+//Nelson Edit:
+//renamed getOccupied() to isOccupied();
+bool mapUnit::isOccupied(){
     return this->occupied;
 }
 

@@ -24,6 +24,11 @@
  * Libaray:
  *
  */
+
+//Nelson Edit:
+//make const int to replace 100
+const int defaultTileSize = 50;
+
 enum MapType {
     MAP_START,
     MAP_INSIDE,
@@ -45,7 +50,10 @@ public:
     mapUnit * getLeft();
     mapUnit * getRight();
     void setOccupied();
-    bool getOccupied();
+    void setOccupied(bool val);
+    //Nelson Edit:
+    //renamed getOccupied() to isOccupied();
+    bool isOccupied();
     int index;
     void setImage(char a);
     

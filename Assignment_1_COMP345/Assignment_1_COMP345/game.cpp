@@ -16,7 +16,7 @@ game::game(SDL_Renderer *renderer,int w,int h){
     hero=character(renderer);
     this->renderer=renderer;
     SDL_Rect srcrectTEMP={0,0,600,600};
-    SDL_Rect dstrectTEMP={0,0,100,100};
+    SDL_Rect dstrectTEMP={0,0,defaultTileSize,defaultTileSize};
     this->testimage=gameItem(renderer, srcrectTEMP,
                               dstrectTEMP, "ds");
     gameItem temp1;
@@ -84,11 +84,11 @@ game::game(SDL_Renderer *renderer,int w,int h){
     
     
     srcrect={0,0,600,600};
-    dstrect={0,600,100,100};
+    dstrect={0,600,defaultTileSize,defaultTileSize};
     for(int i=0;i<8;i++){
         temp1=gameItem(renderer,srcrect,dstrect,address2[i]);
         itemeditor_map.push_back(temp1);
-        dstrect.x+=100;
+        dstrect.x+=defaultTileSize;
     }
 
 };
@@ -207,34 +207,55 @@ void game::render(SDL_Renderer *renderer){
 
 }
 void game::handleinput(){
-    if(this->type==type_mainMenu){
-        mainMenu_gui_event();
-    }
-    else if(this->type==type_mapeditor){
-        ball();
-        selection();
-        Cmove();
-    }
-    else if(this->type==type_play){
-        Cmove();
-    }
     //Nelson Edit:
-    //add menu gui handlers
-    else if(this->type==type_characterSelector){
-        charSelectMenuGuiEvent();
-    }
-    else if(this->type == type_mapSelector){
-        mapSelectMenuGuiEvent();
+    //changed to switch statement, added some cases
+    switch (this->type) {
+        case type_mainMenu:
+            mainMenu_gui_event();
+            break;
+        case type_mapeditor:
+            ball();
+            selection();
+            Cmove();
+            break;
+        case type_play:
+            Cmove();
+            break;
+        case type_characterSelector:
+            charSelectMenuGuiEvent();
+            break;
+        case type_mapSelector:
+            mapSelectMenuGuiEvent();
+            break;
+            
+        case type_characterEditor:
+        case type_itemEditor:
+        case type_mapFileLoad:
+        case type_characterFileLoad:
+            //do nothing, GUI input is suspended in favour of console
+            break;
+        case type_exit:
+            std::cerr << "This code should never be able to be reached. handleInput()" << std::endl;
+            break;
+        default:
+            std::cerr << "Unhandled type in method handleinput()" << std::endl;
+            break;
     }
 }
 
 bool game::checkifinside(int x,int y,SDL_Rect dstrect){
     //Nelson Edit:
     //change y to x in last part
-    if((x<(dstrect.x+dstrect.w)&&x>(dstrect.x))&&(y<(dstrect.y+dstrect.h)&&y>(dstrect.y)))
-       return true;
-    else
-       return false;
+    if(x < (dstrect.x + dstrect.w) &&
+       y < (dstrect.y + dstrect.h) &&
+       x > dstrect.x &&
+       y > dstrect.y )
+    {
+        return true;
+    }
+    else{
+        return false;
+    }
 }
 void game::mainMenu_gui_event(){
     SDL_WaitEvent(&e);
@@ -337,102 +358,158 @@ void game::mapSelectMenuGuiEvent(){
 }
 
 void game::Cmove(){
+    //Nelson Edit::
+    //fixing this whole method
+    
     SDL_WaitEvent(&e);
     switch(e.key.keysym.sym){
+        case SDLK_UP: //execute code in next case
         case SDLK_w:
             if(e.type == SDL_KEYDOWN){
-                if(hero.Directioncounter!=3){
-                    hero.movecounter=0;
-                    hero.Directioncounter=3;
+                
+                //check if within map bounds
+                bool withinMapBounds = false;
+                if(hero.dstrect.y > 0){
+                    withinMapBounds = true;
                 }
-                else{
-                    if(hero.movecounter<3)
-                        hero.movecounter++;
-                    else
-                        hero.movecounter=0;
-                    hero.Directioncounter=3;
+                
+                //check if next block is occupied
+                bool nextIsNotOccupied = false;
+                SDL_Rect nextRect = hero.dstrect; nextRect.y -= defaultTileSize;
+                if(! this->gamemap.checkifOccpuied(nextRect) ){
+                    nextIsNotOccupied = true;
                 }
-                if(hero.dstrect.y>=((this->gamemap.getnH()-1)*100) or &hero.dstrect.y<=0){
+                
+                if(withinMapBounds && nextIsNotOccupied){
+                    
+                    //set next block to occupied (by hero)
+                    this->gamemap.setOccpuied(nextRect);
+                    //set current block to unoccupied
+                    this->gamemap.setOccupied(hero.dstrect, false);
+                    
+                    //move hero
+                    hero.dstrect.y -= defaultTileSize;
                 }
-                else{
-                    hero.dstrect.y-=100;
-                }
+                
+                //set character's facing direction
+                hero.Directioncounter = 3;
             }
             break;
+        case SDLK_DOWN: //execute code in next case
         case SDLK_s:
             if(e.type == SDL_KEYDOWN){
-                if(hero.Directioncounter!=2){
-                    hero.movecounter=0;
-                    hero.Directioncounter=2;
+                //check if within map bounds
+                bool withinMapBounds = false;
+                if(hero.dstrect.y < (this->gamemap.getNumberVerticalElements()-1)*defaultTileSize){
+                    withinMapBounds = true;
                 }
-                else{
-                    if(hero.movecounter<3)
-                        hero.movecounter++;
-                    else
-                        hero.movecounter=0;
-                    hero.Directioncounter=2;
+                
+                //check if next block is occupied
+                bool nextIsNotOccupied = false;
+                SDL_Rect nextRect = hero.dstrect; nextRect.y += defaultTileSize;
+                if(! this->gamemap.checkifOccpuied(nextRect) ){
+                    nextIsNotOccupied = true;
                 }
-                if(hero.dstrect.y>=((this->gamemap.getnH()-1)*100) or &hero.dstrect.y<=0){
+                
+                if(withinMapBounds && nextIsNotOccupied){
+                    
+                    //set next block to occupied (by hero)
+                    this->gamemap.setOccpuied(nextRect);
+                    //set current block to unoccupied
+                    this->gamemap.setOccupied(hero.dstrect, false);
+                    
+                    //move hero
+                    hero.dstrect.y += defaultTileSize;
                 }
-                else{
-                    hero.dstrect.y+=100;
-                }
+                
+                //set character's facing direction
+                hero.Directioncounter = 2;
             }
             break;
+        case SDLK_LEFT: //execute code in next case
         case SDLK_a:
             if(e.type == SDL_KEYDOWN){
-                if(hero.Directioncounter!=0){
-                    hero.movecounter=0;
-                    hero.Directioncounter=0;
+                
+                //check if within map bounds
+                bool withinMapBounds = false;
+                if(hero.dstrect.x > 0){
+                    withinMapBounds = true;
                 }
-                else{
-                    if(hero.movecounter<3)
-                        hero.movecounter++;
-                    else
-                        hero.movecounter=0;
-                    hero.Directioncounter=0;
+                
+                //check if next block is occupied
+                bool nextIsNotOccupied = false;
+                SDL_Rect nextRect = hero.dstrect; nextRect.x -= defaultTileSize;
+                if(! this->gamemap.checkifOccpuied(nextRect) ){
+                    nextIsNotOccupied = true;
                 }
-                if(hero.dstrect.x>=((this->gamemap.getnV()-1)*100) or &hero.dstrect.x<=0){
+                
+                if(withinMapBounds && nextIsNotOccupied){
+                    
+                    //set next block to occupied (by hero)
+                    this->gamemap.setOccpuied(nextRect);
+                    //set current block to unoccupied
+                    this->gamemap.setOccupied(hero.dstrect, false);
+                    
+                    //move hero
+                    hero.dstrect.x -= defaultTileSize;
                 }
-                else{
-                    hero.dstrect.x-=100;
-                }
+                
+                //set character's facing direction
+                hero.Directioncounter = 0;
             }
             break;
+        case SDLK_RIGHT: //execute code in next case
         case SDLK_d:
             if(e.type == SDL_KEYDOWN){
-                if(hero.Directioncounter!=1){
-                    hero.movecounter=0;
-                    hero.Directioncounter=1;
+                
+                //check if within map bounds
+                bool withinMapBounds = false;
+                if(hero.dstrect.x < (this->gamemap.getNumberHorizontalElements()-1)*defaultTileSize){
+                    withinMapBounds = true;
                 }
-                else{
-                    if(hero.movecounter<3)
-                        hero.movecounter++;
-                    else
-                        hero.movecounter=0;
-                    hero.Directioncounter=1;
+                
+                //check if next block is occupied
+                bool nextIsNotOccupied = false;
+                SDL_Rect nextRect = hero.dstrect; nextRect.x += defaultTileSize;
+                if(! this->gamemap.checkifOccpuied(nextRect) ){
+                    nextIsNotOccupied = true;
                 }
-                if(hero.dstrect.x>=((this->gamemap.getnV()-1)*100) or &hero.dstrect.x<=0){
+                
+                if(withinMapBounds && nextIsNotOccupied){
+                    
+                    //set next block to occupied (by hero)
+                    this->gamemap.setOccpuied(nextRect);
+                    //set current block to unoccupied
+                    this->gamemap.setOccupied(hero.dstrect, false);
+                    
+                    //move hero
+                    hero.dstrect.x += defaultTileSize;
                 }
-                else{
-                    hero.dstrect.x+=100;
-                }
+                
+                //set character's facing direction
+                hero.Directioncounter = 1;
             }
             break;
     }
+    //update move counter if a button was pressed
+    if(e.type == SDL_KEYDOWN){
+        hero.movecounter = (hero.movecounter + 1) % 4;
+    }
+    
+    //select appropriate sprite
     hero.srcrect.x=hero.movecounter*hero.movestep;
     hero.srcrect.y=hero.Directioncounter*hero.movestep;
     
     }
-void game::ball()
-{
+
+void game::ball(){
     int flag=selection();
     SDL_WaitEvent(&e);
     int x = 0, y = 0;
     SDL_GetMouseState(&x, &y);
     if(flag!=-1&&select){
-        x=x/100*100;
-        y=y/100*100;
+        x=x/defaultTileSize*defaultTileSize;
+        y=y/defaultTileSize*defaultTileSize;
         if(y>500)
             y=500;
         this->testimage.dstrect.x=x;
@@ -446,8 +523,8 @@ void game::ball()
         }
     }
     else if(select&&flag==-1){
-        x=x/100*100;
-        y=y/100*100;
+        x=x/defaultTileSize*defaultTileSize;
+        y=y/defaultTileSize*defaultTileSize;
         if(y>500)
             y=500;
         this->testimage.dstrect.x=x;
@@ -463,17 +540,18 @@ void game::ball()
     }
     
 }
+
 int game::selection(){
     SDL_WaitEvent(&e);
     int x = 0, y = 0;
     SDL_GetMouseState(&x, &y);
-    x=x/100*100;
-    y=y/100*100;
-    if(y>500&&(e.button.button == SDL_BUTTON_LEFT))
+    x = x / defaultTileSize*defaultTileSize; //truncate to integer
+    y = y / defaultTileSize*defaultTileSize; //truncate to integer
+    if(y > 500 && (e.button.button == SDL_BUTTON_LEFT) )
     {
-        cout<<x/100;
-        select=true;
-        return x/100;
+        //For tracing: cout<<x/defaultTileSize;
+        select = true;
+        return x/defaultTileSize;
     }
     else
         return -1;

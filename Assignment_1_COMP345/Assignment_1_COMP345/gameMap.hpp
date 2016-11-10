@@ -35,13 +35,17 @@ public:
     bool mapValidate(std::vector<mapUnit> a,std::vector<mapUnit> b);
     bool stackContainElement(std::vector<mapUnit> a, mapUnit b);
     int totalgrid;
-    int getnH();
-    int getnV();
+    int getNumberVerticalElements();
+    int getNumberHorizontalElements();
     bool checkifOccpuied(SDL_Rect dstrect);
     void setOccpuied(SDL_Rect dstrect);
+    void setOccupied(SDL_Rect, bool state);
 private:
-    int nH;
-    int nV;
+    //Nelson Edit:
+    //rename nH, nV to be correct and English
+    
+    int numberVerticalElements;
+    int numberHorizontalElements;
     void setOrder();
     mapUnit outBoundry;
 };
