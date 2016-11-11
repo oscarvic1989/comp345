@@ -26,7 +26,8 @@ enum GameType {
     type_mapSelector,
     type_mapFileLoad,
     type_characterFileLoad,
-    type_exit
+    type_exit,
+    type_congratulation
 };
 class game{
 public:

@@ -49,7 +49,7 @@ game::game(SDL_Renderer *renderer,int w,int h){
         "resources/me_exit.png",
         "resources/me_next.png"
     };
-    gameItem glowingSquare = gameItem(renderer, SDL_Rect{0,0,256,256}, SDL_Rect{0,0,defaultTileSize,defaultTileSize},"resources/glowingsquare.png");
+    glowingSquare = gameItem(renderer, SDL_Rect{0,0,256,256}, SDL_Rect{0,0,defaultTileSize,defaultTileSize},"resources/glowingsquare.png");
     
     SDL_Rect srcrect={0,0,382,157};
     SDL_Rect dstrect={(w-200)/2,h/9,w/4,h/9};
@@ -175,11 +175,7 @@ void game::render(SDL_Renderer *renderer){
                 it != this->Campaign.gameMapStack[this->currentMapCounter].mapStack.end(); ++it){
                 SDL_RenderCopy(renderer, it->texture,&it->srcrect, &it->dstrect);
                 //Make end glow
-                if(it->STATE == Map_END){
-                    glowingSquare.dstrect.x = it->dstrect.x;
-                    glowingSquare.dstrect.y = it->dstrect.y;
-                    SDL_RenderCopy(renderer, glowingSquare.texture, &glowingSquare.srcrect, &glowingSquare.dstrect);
-                }
+                SDL_RenderCopy(renderer, glowingSquare.texture, &glowingSquare.srcrect, &glowingSquare.dstrect);
                 //Update screen
             }
             for(std::vector<gameItem>::iterator it = this->Campaign.gameitem.begin() ;
@@ -422,6 +418,7 @@ void game::mapSelectMenuGuiEvent(){
                     std::string line;
                     while (std::getline(inputfile, line))
                     {
+                        cout<<line;
                         this->Campaign.mapNameStack.push_back(line);
                     }
                     inputfile.close();
@@ -440,11 +437,13 @@ void game::mapSelectMenuGuiEvent(){
                         this->Campaign.hero.dstrect=testmap1.mapStack[a].dstrect;
                         inputfile>>n;
                         b=n;
+                        glowingSquare.dstrect=testmap1.mapStack[b].dstrect;
                         testmap1.setEnd(b);
                         bool flag=true;
                         while(flag){
                             inputfile>>m>>n;
                             a=m;b=n;
+                            cout<<m<<endl;
                             if(a==9999 or b==9999)
                                 break;
                             else if(n==1)
@@ -452,15 +451,17 @@ void game::mapSelectMenuGuiEvent(){
                         }
                         this->Campaign.gameMapStack.push_back(testmap1);
                         while(inputfile>>n){
+                            b=n;
+                            cout<<b<<endl;
                             SDL_Rect srcrectTEMP={0,0,600,600};
                             gameItem testimage=gameItem(renderer, srcrectTEMP,
-                                                        testmap1.mapStack[n].dstrect, "resources/ball.png");
+                                                        testmap1.mapStack[b].dstrect, "resources/ball.png");
                             testimage.setMapNumber(this->currentMapCounter);
                             this->Campaign.gameitem.push_back(testimage);
-                            this->currentMapCounter++;
                         }
-                        this->type = type_play;
+                        this->currentMapCounter++;
                     }
+                    this->type = type_play;
                     this->currentMapCounter=0;
                     break;
                 }
@@ -494,6 +495,15 @@ void game::mapEditorControlButtonsHandler(){
                 string temp;
                 cin>>temp;
                 std::ofstream outfile ("resources/save_maps/"+temp+".txt");
+                
+                cout<<"Please enter the start point of the map";
+                int temppoint;
+                cin >> temppoint;
+                this->gamemap.setStart(temppoint);
+                cout<<"Please enter the end point of the map";
+                cin >> temppoint;
+                this->gamemap.setEnd(temppoint);
+                
                 if(outfile.is_open()){
                     outfile<<this->gamemap.getNumberHorizontalElements()<<" "<<this->gamemap.getNumberVerticalElements()<<endl;
                     for(int i=0;i<this->gamemap.mapStack.size();i++){
@@ -516,13 +526,6 @@ void game::mapEditorControlButtonsHandler(){
                     }
                 }
                 outfile.close();
-                cout<<"Please enter the start point of the map";
-                int temppoint;
-                cin >> temppoint;
-                this->gamemap.setStart(temppoint);
-                cout<<"Please enter the end point of the map";
-                cin >> temppoint;
-                this->gamemap.setEnd(temppoint);
                 
                 this->Campaign.mapNameStack.push_back(temp);
                 this->Campaign.gameMapStack.push_back(this->gamemap);
@@ -531,10 +534,8 @@ void game::mapEditorControlButtonsHandler(){
                 std::ofstream outfile2 ("resources/campaign/"+this->Campaign.getName()+".txt");
                 if(outfile2.is_open()){
                     for(int i=0;i<this->Campaign.mapNameStack.size();i++){
-                        outfile2<<i<<" "<<
-                        this->Campaign.mapNameStack[i]<<endl;
+                        outfile2<<this->Campaign.mapNameStack[i]<<endl;
                     }
-                    outfile2<<"end of file"<<endl;
                 }
                 outfile2.close();
                 this->currentMapCounter=0;
@@ -552,6 +553,15 @@ void game::mapEditorControlButtonsHandler(){
                 string temp;
                 cin>>temp;
                 std::ofstream outfile ("resources/save_maps/"+temp+".txt");
+                
+                cout<<"Please enter the start point of the map";
+                int temppoint;
+                cin >> temppoint;
+                this->gamemap.setStart(temppoint);
+                cout<<"Please enter the end point of the map";
+                cin >> temppoint;
+                this->gamemap.setEnd(temppoint);
+                
                 if(outfile.is_open()){
                     outfile<<this->gamemap.getNumberHorizontalElements()<<" "<<this->gamemap.getNumberVerticalElements()<<endl;
                     for(int i=0;i<this->gamemap.mapStack.size();i++){
@@ -566,21 +576,13 @@ void game::mapEditorControlButtonsHandler(){
                         outfile<<i<<" "<<
                         this->gamemap.mapStack[i].isOccupied()<<endl;
                     }
-                    outfile<<"end of Map"<<endl;
+                    outfile<<9999<<endl;
                     for(int j=0;j<this->Campaign.gameitem.size();j++){
                         if(this->Campaign.gameitem[j].getMapNumber()==this->currentMapCounter)
                             outfile<<this->Campaign.gameitem[j].getMapIndex()<<endl;
                     }
                 }
                 outfile.close();
-                
-                cout<<"Please enter the start point of the map";
-                int temppoint;
-                cin >> temppoint;
-                this->gamemap.setStart(temppoint);
-                cout<<"Please enter the end point of the map";
-                cin >> temppoint;
-                this->gamemap.setEnd(temppoint);
                 
                 this->Campaign.mapNameStack.push_back(temp);
                 this->Campaign.gameMapStack.push_back(this->gamemap);
@@ -623,7 +625,7 @@ void game::Cmove(){
                 //check if next block is occupied
                 bool nextIsNotOccupied = false;
                 SDL_Rect nextRect = this->Campaign.hero.dstrect; nextRect.y -= defaultTileSize;
-                if(! this->gamemap.checkifOccpuied(nextRect) ){
+                if(! this->Campaign.gameMapStack[this->currentMapCounter].checkifOccpuied(nextRect) ){
                     nextIsNotOccupied = true;
                 }
                 
@@ -654,7 +656,7 @@ void game::Cmove(){
                 //check if next block is occupied
                 bool nextIsNotOccupied = false;
                 SDL_Rect nextRect = this->Campaign.hero.dstrect; nextRect.y += defaultTileSize;
-                if(! this->gamemap.checkifOccpuied(nextRect) ){
+                if(! this->Campaign.gameMapStack[this->currentMapCounter].checkifOccpuied(nextRect) ){
                     nextIsNotOccupied = true;
                 }
                 
@@ -686,7 +688,7 @@ void game::Cmove(){
                 //check if next block is occupied
                 bool nextIsNotOccupied = false;
                 SDL_Rect nextRect = this->Campaign.hero.dstrect; nextRect.x -= defaultTileSize;
-                if(! this->gamemap.checkifOccpuied(nextRect) ){
+                if(! this->Campaign.gameMapStack[this->currentMapCounter].checkifOccpuied(nextRect) ){
                     nextIsNotOccupied = true;
                 }
                 
@@ -718,7 +720,7 @@ void game::Cmove(){
                 //check if next block is occupied
                 bool nextIsNotOccupied = false;
                 SDL_Rect nextRect = this->Campaign.hero.dstrect; nextRect.x += defaultTileSize;
-                if(! this->gamemap.checkifOccpuied(nextRect) ){
+                if(! this->Campaign.gameMapStack[this->currentMapCounter].checkifOccpuied(nextRect) ){
                     nextIsNotOccupied = true;
                 }
                 
@@ -747,7 +749,22 @@ void game::Cmove(){
     this->Campaign.hero.srcrect.x=this->Campaign.hero.movecounter*this->Campaign.hero.movestep;
     this->Campaign.hero.srcrect.y=this->Campaign.hero.Directioncounter*this->Campaign.hero.movestep;
     
+    //if reached end of map
+    if(this->Campaign.hero.dstrect.x == this->glowingSquare.dstrect.x &&
+       this->Campaign.hero.dstrect.y == this->glowingSquare.dstrect.y){
+        this->currentMapCounter++;
+        
+        if(this->currentMapCounter==this->Campaign.gameMapStack.size()){
+            this->currentMapCounter--;
+        }
+        else{
+            for(int i=0;i<this->Campaign.gameMapStack[this->currentMapCounter].mapStack.size();i++){
+                if(this->Campaign.gameMapStack[this->currentMapCounter].mapStack[i].STATE==MAP_START)
+                    this->Campaign.hero.dstrect=Campaign.gameMapStack[this->currentMapCounter].mapStack[i].dstrect;break;
+            }
+        }
     }
+}
 
 void game::ball(){
     int flag=selection();
