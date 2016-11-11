@@ -106,7 +106,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "32"
             endingLineNumber = "32"
-            landmarkName = "gameMap::setOrder()"
+            landmarkName = "gameMap::gameMap(int width, int length,SDL_Renderer *renderer)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -217,7 +217,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "146"
-            endingLineNumber = "146">
+            endingLineNumber = "146"
+            landmarkName = "gameMap::checkifOccpuied(SDL_Rect dstrect)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -231,7 +233,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "148"
-            endingLineNumber = "148">
+            endingLineNumber = "148"
+            landmarkName = "gameMap::checkifOccpuied(SDL_Rect dstrect)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -277,7 +281,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "141"
-            endingLineNumber = "141">
+            endingLineNumber = "141"
+            landmarkName = "gameMap::getNumberHorizontalElements()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -307,7 +313,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "142"
-            endingLineNumber = "142">
+            endingLineNumber = "142"
+            landmarkName = "gameMap::checkifOccpuied(SDL_Rect dstrect)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -321,7 +329,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "143"
-            endingLineNumber = "143">
+            endingLineNumber = "143"
+            landmarkName = "gameMap::checkifOccpuied(SDL_Rect dstrect)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -349,9 +359,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "81"
-            endingLineNumber = "81"
-            landmarkName = "gameMap::mapValidate(std::vector&lt;mapUnit&gt; a,std::vector&lt;mapUnit&gt; b)"
-            landmarkType = "7">
+            endingLineNumber = "81">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -366,7 +374,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "80"
             endingLineNumber = "80"
-            landmarkName = "gameMap::mapValidate(std::vector&lt;mapUnit&gt; a,std::vector&lt;mapUnit&gt; b)"
+            landmarkName = "gameMap::mapValidateInit()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -443,9 +451,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "12"
-            endingLineNumber = "12"
-            landmarkName = "gameMap::gameMap()"
-            landmarkType = "7">
+            endingLineNumber = "12">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -796,7 +802,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "88"
             endingLineNumber = "88"
-            landmarkName = "game::handleinput()"
+            landmarkName = "game::game(SDL_Renderer *renderer,int w,int h)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -812,7 +818,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "110"
             endingLineNumber = "110"
-            landmarkName = "game::manu_gui_event()"
+            landmarkName = "game::play()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -828,7 +834,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "91"
             endingLineNumber = "91"
-            landmarkName = "game::handleinput()"
+            landmarkName = "game::game(SDL_Renderer *renderer,int w,int h)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -876,7 +882,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "92"
             endingLineNumber = "92"
-            landmarkName = "game::handleinput()"
+            landmarkName = "game::game(SDL_Renderer *renderer,int w,int h)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -892,7 +898,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "123"
             endingLineNumber = "123"
-            landmarkName = "game::manu_gui_event()"
+            landmarkName = "game::render(SDL_Renderer *renderer)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -908,7 +914,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "54"
             endingLineNumber = "54"
-            landmarkName = "game::render(SDL_Renderer *renderer)"
+            landmarkName = "game::game(SDL_Renderer *renderer,int w,int h)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -935,12 +941,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Assignment_1_COMP345/game.cpp"
-            timestampString = "499826366.672459"
+            timestampString = "500513635.868141"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "208"
-            endingLineNumber = "208"
-            landmarkName = "game::ball()"
+            startingLineNumber = "227"
+            endingLineNumber = "227"
+            landmarkName = "game::render(SDL_Renderer *renderer)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -951,12 +957,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Assignment_1_COMP345/game.cpp"
-            timestampString = "499826366.672459"
+            timestampString = "500513635.868141"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "236"
-            endingLineNumber = "236"
-            landmarkName = "game::ball()"
+            startingLineNumber = "255"
+            endingLineNumber = "255"
+            landmarkName = "game::handleinput()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -967,12 +973,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Assignment_1_COMP345/game.cpp"
-            timestampString = "499826366.672459"
+            timestampString = "500513635.868141"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "218"
-            endingLineNumber = "218"
-            landmarkName = "game::ball()"
+            startingLineNumber = "237"
+            endingLineNumber = "237"
+            landmarkName = "game::render(SDL_Renderer *renderer)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -983,12 +989,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Assignment_1_COMP345/game.cpp"
-            timestampString = "499826366.672459"
+            timestampString = "500513635.868141"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "231"
-            endingLineNumber = "231"
-            landmarkName = "game::ball()"
+            startingLineNumber = "250"
+            endingLineNumber = "250"
+            landmarkName = "game::handleinput()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -999,19 +1005,19 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Assignment_1_COMP345/game.cpp"
-            timestampString = "499826366.672459"
+            timestampString = "500513635.868141"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "233"
-            endingLineNumber = "233"
-            landmarkName = "game::ball()"
+            startingLineNumber = "252"
+            endingLineNumber = "252"
+            landmarkName = "game::handleinput()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Assignment_1_COMP345/game.cpp"

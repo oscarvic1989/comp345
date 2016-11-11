@@ -151,6 +151,24 @@ void game::render(SDL_Renderer *renderer){
             SDL_RenderCopy(renderer, this->testimage.texture,&this->testimage.srcrect, &this->testimage.dstrect);
             break;
         case type_play:
+        {
+            //test
+            TTF_Init();
+            TTF_Font* Sans;
+            Sans= TTF_OpenFont("OpenSans-Bold.ttf", 90); //this opens a font style and sets a size
+            
+            SDL_Color White = {255, 100, 100};  // this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
+            
+            SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, "Welcome", White); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
+            
+            SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage); //now you can convert it into a texture
+            
+            SDL_Rect Message_rect; //create a rect
+            Message_rect.x = 0;  //controls the rect's x coordinate
+            Message_rect.y = 0; // controls the rect's y coordinte
+            Message_rect.w = 100; // controls the width of the rect
+            Message_rect.h = 100; // controls the height of the rect
+            
             for(std::vector<mapUnit>::iterator it = this->Campaign.gameMapStack[this->currentMapCounter].mapStack.begin() ;
                 it != this->Campaign.gameMapStack[this->currentMapCounter].mapStack.end(); ++it){
                 SDL_RenderCopy(renderer, it->texture,&it->srcrect, &it->dstrect);
@@ -164,6 +182,7 @@ void game::render(SDL_Renderer *renderer){
                 //Update screen
             }
             SDL_RenderCopy(renderer, this->Campaign.hero.texture,&this->Campaign.hero.srcrect, &this->Campaign.hero.dstrect);
+            }
             break;
         case type_exit:
             exit(0);

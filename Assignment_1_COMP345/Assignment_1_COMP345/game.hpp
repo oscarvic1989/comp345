@@ -13,6 +13,7 @@
 #include "gameMap.hpp"
 #include "character.hpp"
 #include "campaign.hpp"
+#include <SDL2_ttf/SDL_ttf.h>
 //Nelson Edit:
 //added types, changed manu to mainMenu
 enum GameType {
@@ -29,6 +30,8 @@ enum GameType {
 };
 class game{
 public:
+    
+    //
     campaign Campaign;
     gameMap gamemap;
     GameType type;
