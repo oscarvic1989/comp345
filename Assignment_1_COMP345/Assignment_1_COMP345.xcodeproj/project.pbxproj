@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		52D7E8791DD5161300531B2F /* campaign.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52D7E8771DD5161300531B2F /* campaign.cpp */; };
+		554A3D961DC0FE7F00234E5C /* game Item.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 554A3D941DC0FE7F00234E5C /* game Item.cpp */; };
+		558B83AB1DCA8DA800C891FF /* character.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558B83A91DCA8DA800C891FF /* character.cpp */; };
+		55D642BF1DBC2AF0009DD753 /* game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D642BD1DBC2AF0009DD753 /* game.cpp */; };
 		55D91BD51DB8291200861D5B /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D91BD41DB8291200861D5B /* main.cpp */; };
 		55D91BDF1DB8295D00861D5B /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55D91BDC1DB8295D00861D5B /* SDL2_image.framework */; };
 		55D91BE01DB8295D00861D5B /* SDL2_ttf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55D91BDD1DB8295D00861D5B /* SDL2_ttf.framework */; };
@@ -28,6 +32,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		52D7E8771DD5161300531B2F /* campaign.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = campaign.cpp; sourceTree = "<group>"; };
+		52D7E8781DD5161300531B2F /* campaign.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = campaign.hpp; sourceTree = "<group>"; };
+		554A3D941DC0FE7F00234E5C /* game Item.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "game Item.cpp"; sourceTree = "<group>"; };
+		554A3D951DC0FE7F00234E5C /* game Item.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = "game Item.hpp"; sourceTree = "<group>"; };
+		558B83A91DCA8DA800C891FF /* character.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = character.cpp; sourceTree = "<group>"; };
+		558B83AA1DCA8DA800C891FF /* character.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = character.hpp; sourceTree = "<group>"; };
+		55D642BD1DBC2AF0009DD753 /* game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = game.cpp; sourceTree = "<group>"; };
+		55D642BE1DBC2AF0009DD753 /* game.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = game.hpp; sourceTree = "<group>"; };
 		55D91BD11DB8291200861D5B /* Assignment_1_COMP345 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Assignment_1_COMP345; sourceTree = BUILT_PRODUCTS_DIR; };
 		55D91BD41DB8291200861D5B /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		55D91BDC1DB8295D00861D5B /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../../../../../Library/Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
@@ -78,6 +90,14 @@
 				55D91BE31DB8298000861D5B /* gameMap.hpp */,
 				55D91BE51DB82A7400861D5B /* mapUnit.cpp */,
 				55D91BE61DB82A7400861D5B /* mapUnit.hpp */,
+				55D642BD1DBC2AF0009DD753 /* game.cpp */,
+				55D642BE1DBC2AF0009DD753 /* game.hpp */,
+				554A3D941DC0FE7F00234E5C /* game Item.cpp */,
+				554A3D951DC0FE7F00234E5C /* game Item.hpp */,
+				558B83A91DCA8DA800C891FF /* character.cpp */,
+				558B83AA1DCA8DA800C891FF /* character.hpp */,
+				52D7E8771DD5161300531B2F /* campaign.cpp */,
+				52D7E8781DD5161300531B2F /* campaign.hpp */,
 			);
 			path = Assignment_1_COMP345;
 			sourceTree = "<group>";
@@ -152,6 +172,10 @@
 				55D91BE71DB82A7400861D5B /* mapUnit.cpp in Sources */,
 				55D91BE41DB8298000861D5B /* gameMap.cpp in Sources */,
 				55D91BD51DB8291200861D5B /* main.cpp in Sources */,
+				55D642BF1DBC2AF0009DD753 /* game.cpp in Sources */,
+				52D7E8791DD5161300531B2F /* campaign.cpp in Sources */,
+				554A3D961DC0FE7F00234E5C /* game Item.cpp in Sources */,
+				558B83AB1DCA8DA800C891FF /* character.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -252,6 +276,13 @@
 					"$(inherited)",
 					"$(LOCAL_LIBRARY_DIR)/Frameworks",
 				);
+				"HEADER_SEARCH_PATHS[arch=*]" = /usr/local/include/;
+				"LIBRARY_SEARCH_PATHS[arch=*]" = /usr/local/lib/;
+				"OTHER_LDFLAGS[arch=*]" = (
+					"-L/usr/local/lib/",
+					"-lcppunit",
+					"-ldl",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -262,6 +293,13 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
+				"HEADER_SEARCH_PATHS[arch=*]" = /usr/local/include/;
+				"LIBRARY_SEARCH_PATHS[arch=*]" = /usr/local/lib/;
+				"OTHER_LDFLAGS[arch=*]" = (
+					"-L/usr/local/lib/",
+					"-lcppunit",
+					"-ldl",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -286,6 +324,7 @@
 				55D91BDA1DB8291200861D5B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

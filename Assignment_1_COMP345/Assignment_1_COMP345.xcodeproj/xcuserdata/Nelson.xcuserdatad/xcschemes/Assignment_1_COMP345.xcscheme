@@ -47,7 +47,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "/Users/oscar/Documents/xcode project/untitled folder/Assignment_1_COMP345"
+      customWorkingDirectory = "/Users/Nelson/Library/Mobile Documents/com~apple~CloudDocs/GitHub/comp345/Assignment_1_COMP345"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
