@@ -24,6 +24,14 @@
  * Libaray:
  *
  */
+<<<<<<< HEAD
+=======
+
+//Nelson Edit:
+//make const int to replace 100
+const int defaultTileSize = 50;
+
+>>>>>>> map-with-basic-gui
 enum MapType {
     MAP_START,
     MAP_INSIDE,
@@ -44,8 +52,16 @@ public:
     mapUnit * getDown();
     mapUnit * getLeft();
     mapUnit * getRight();
+<<<<<<< HEAD
     void setOccupied(bool flag);
     bool getOccupied();
+=======
+    void setOccupied();
+    void setOccupied(bool val);
+    //Nelson Edit:
+    //renamed getOccupied() to isOccupied();
+    bool isOccupied();
+>>>>>>> map-with-basic-gui
     int index;
     void setImage(char a);
     

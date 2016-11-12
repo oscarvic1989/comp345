@@ -46,7 +46,12 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
+<<<<<<< HEAD
       useCustomWorkingDirectory = "NO"
+=======
+      useCustomWorkingDirectory = "YES"
+      customWorkingDirectory = "/Users/Nelson/Library/Mobile Documents/com~apple~CloudDocs/GitHub/comp345/Assignment_1_COMP345"
+>>>>>>> map-with-basic-gui
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"

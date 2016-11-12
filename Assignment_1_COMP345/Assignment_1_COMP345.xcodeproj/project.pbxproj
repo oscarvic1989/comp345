@@ -7,8 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+<<<<<<< HEAD
 		5200B6FB1DD26882003A785D /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5200B6FA1DD26882003A785D /* SDL2.framework */; };
 		5200B6FD1DD2689A003A785D /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5200B6FC1DD2689A003A785D /* SDL2_image.framework */; };
+=======
+		52D7E8791DD5161300531B2F /* campaign.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52D7E8771DD5161300531B2F /* campaign.cpp */; };
+		550BF2F71DD65EA600BDBC1F /* ItemContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 550BF2F51DD65EA600BDBC1F /* ItemContainer.cpp */; };
+		550BF2FA1DD65F4700BDBC1F /* ItemBuilder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 550BF2F81DD65F4700BDBC1F /* ItemBuilder.cpp */; };
+		550BF2FD1DD65F9D00BDBC1F /* Item.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 550BF2FB1DD65F9D00BDBC1F /* Item.cpp */; };
+		550BF3001DD65FD800BDBC1F /* Enhancement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 550BF2FE1DD65FD800BDBC1F /* Enhancement.cpp */; };
+>>>>>>> map-with-basic-gui
 		554A3D961DC0FE7F00234E5C /* game Item.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 554A3D941DC0FE7F00234E5C /* game Item.cpp */; };
 		558B83AB1DCA8DA800C891FF /* character.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 558B83A91DCA8DA800C891FF /* character.cpp */; };
 		55D642BF1DBC2AF0009DD753 /* game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55D642BD1DBC2AF0009DD753 /* game.cpp */; };
@@ -30,8 +38,21 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+<<<<<<< HEAD
 		5200B6FA1DD26882003A785D /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
 		5200B6FC1DD2689A003A785D /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../../../../../../../../Library/Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
+=======
+		52D7E8771DD5161300531B2F /* campaign.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = campaign.cpp; sourceTree = "<group>"; };
+		52D7E8781DD5161300531B2F /* campaign.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = campaign.hpp; sourceTree = "<group>"; };
+		550BF2F51DD65EA600BDBC1F /* ItemContainer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ItemContainer.cpp; sourceTree = "<group>"; };
+		550BF2F61DD65EA600BDBC1F /* ItemContainer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ItemContainer.hpp; sourceTree = "<group>"; };
+		550BF2F81DD65F4700BDBC1F /* ItemBuilder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ItemBuilder.cpp; sourceTree = "<group>"; };
+		550BF2F91DD65F4700BDBC1F /* ItemBuilder.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ItemBuilder.hpp; sourceTree = "<group>"; };
+		550BF2FB1DD65F9D00BDBC1F /* Item.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Item.cpp; sourceTree = "<group>"; };
+		550BF2FC1DD65F9D00BDBC1F /* Item.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Item.hpp; sourceTree = "<group>"; };
+		550BF2FE1DD65FD800BDBC1F /* Enhancement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Enhancement.cpp; sourceTree = "<group>"; };
+		550BF2FF1DD65FD800BDBC1F /* Enhancement.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Enhancement.hpp; sourceTree = "<group>"; };
+>>>>>>> map-with-basic-gui
 		554A3D941DC0FE7F00234E5C /* game Item.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "game Item.cpp"; sourceTree = "<group>"; };
 		554A3D951DC0FE7F00234E5C /* game Item.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = "game Item.hpp"; sourceTree = "<group>"; };
 		558B83A91DCA8DA800C891FF /* character.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = character.cpp; sourceTree = "<group>"; };
@@ -59,6 +80,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		550BF3011DD6624900BDBC1F /* Items */ = {
+			isa = PBXGroup;
+			children = (
+				550BF2F51DD65EA600BDBC1F /* ItemContainer.cpp */,
+				550BF2F61DD65EA600BDBC1F /* ItemContainer.hpp */,
+				550BF2F81DD65F4700BDBC1F /* ItemBuilder.cpp */,
+				550BF2F91DD65F4700BDBC1F /* ItemBuilder.hpp */,
+				550BF2FB1DD65F9D00BDBC1F /* Item.cpp */,
+				550BF2FC1DD65F9D00BDBC1F /* Item.hpp */,
+				550BF2FE1DD65FD800BDBC1F /* Enhancement.cpp */,
+				550BF2FF1DD65FD800BDBC1F /* Enhancement.hpp */,
+			);
+			name = Items;
+			sourceTree = "<group>";
+		};
+		550BF3021DD6625700BDBC1F /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				55D91BE21DB8298000861D5B /* gameMap.cpp */,
+				55D91BE31DB8298000861D5B /* gameMap.hpp */,
+				55D91BE51DB82A7400861D5B /* mapUnit.cpp */,
+				55D91BE61DB82A7400861D5B /* mapUnit.hpp */,
+			);
+			name = Map;
+			sourceTree = "<group>";
+		};
 		55D91BC81DB8291200861D5B = {
 			isa = PBXGroup;
 			children = (
@@ -80,16 +127,26 @@
 			isa = PBXGroup;
 			children = (
 				55D91BD41DB8291200861D5B /* main.cpp */,
+<<<<<<< HEAD
 				55D91BE21DB8298000861D5B /* gameMap.cpp */,
 				55D91BE31DB8298000861D5B /* gameMap.hpp */,
 				55D91BE51DB82A7400861D5B /* mapUnit.cpp */,
 				55D91BE61DB82A7400861D5B /* mapUnit.hpp */,
+=======
+				550BF3021DD6625700BDBC1F /* Map */,
+>>>>>>> map-with-basic-gui
 				55D642BD1DBC2AF0009DD753 /* game.cpp */,
 				55D642BE1DBC2AF0009DD753 /* game.hpp */,
 				554A3D941DC0FE7F00234E5C /* game Item.cpp */,
 				554A3D951DC0FE7F00234E5C /* game Item.hpp */,
 				558B83A91DCA8DA800C891FF /* character.cpp */,
 				558B83AA1DCA8DA800C891FF /* character.hpp */,
+<<<<<<< HEAD
+=======
+				52D7E8771DD5161300531B2F /* campaign.cpp */,
+				52D7E8781DD5161300531B2F /* campaign.hpp */,
+				550BF3011DD6624900BDBC1F /* Items */,
+>>>>>>> map-with-basic-gui
 			);
 			path = Assignment_1_COMP345;
 			sourceTree = "<group>";
@@ -163,8 +220,18 @@
 				55D91BE71DB82A7400861D5B /* mapUnit.cpp in Sources */,
 				55D91BE41DB8298000861D5B /* gameMap.cpp in Sources */,
 				55D91BD51DB8291200861D5B /* main.cpp in Sources */,
+<<<<<<< HEAD
 				55D642BF1DBC2AF0009DD753 /* game.cpp in Sources */,
 				554A3D961DC0FE7F00234E5C /* game Item.cpp in Sources */,
+=======
+				550BF2FD1DD65F9D00BDBC1F /* Item.cpp in Sources */,
+				55D642BF1DBC2AF0009DD753 /* game.cpp in Sources */,
+				550BF2FA1DD65F4700BDBC1F /* ItemBuilder.cpp in Sources */,
+				550BF3001DD65FD800BDBC1F /* Enhancement.cpp in Sources */,
+				52D7E8791DD5161300531B2F /* campaign.cpp in Sources */,
+				554A3D961DC0FE7F00234E5C /* game Item.cpp in Sources */,
+				550BF2F71DD65EA600BDBC1F /* ItemContainer.cpp in Sources */,
+>>>>>>> map-with-basic-gui
 				558B83AB1DCA8DA800C891FF /* character.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
