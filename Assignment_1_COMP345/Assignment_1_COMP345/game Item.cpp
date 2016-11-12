@@ -21,8 +21,6 @@ void gameItem::setImage(SDL_Renderer *renderer,string address){
     this->image = IMG_Load(address.c_str());
     this->texture=SDL_CreateTextureFromSurface(renderer, this->image);
 };
-<<<<<<< HEAD
-=======
 
 void gameItem::setMapNumber(int a){
     this->MapNumber=a;
@@ -36,4 +34,3 @@ void gameItem::setMapIndex(int a){
 int gameItem::getMapIndex(){
     return this->MapIndex;
 }
->>>>>>> map-with-basic-gui

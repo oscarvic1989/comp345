@@ -24,10 +24,7 @@
 #include "game.hpp"
 #include <SDL2_ttf/SDL_ttf.h>
 
-<<<<<<< HEAD
-=======
 
->>>>>>> map-with-basic-gui
  const int weigth=900;
  const int height=700;
 int main(int argc, const char * argv[]) {
@@ -39,16 +36,10 @@ int main(int argc, const char * argv[]) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     
     game gametest=game(renderer,weigth,height);
-<<<<<<< HEAD
-    gametest.gamemap=gameMap(weigth,height,renderer);
-
-    bool quit=false;
-=======
     //gametest.Campaign.hero.equip();
     //gametest.gamemap=gameMap(weigth,height,renderer);
 
     bool quit=false;//controller
->>>>>>> map-with-basic-gui
     //test
     /*
     TTF_Init();

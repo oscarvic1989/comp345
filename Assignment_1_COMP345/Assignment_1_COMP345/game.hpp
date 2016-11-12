@@ -12,21 +12,6 @@
 #include <stdio.h>
 #include "gameMap.hpp"
 #include "character.hpp"
-<<<<<<< HEAD
-enum GameType {
-    type_manu,
-    type_mapeditor,
-    type_play
-};
-class game{
-public:
-    gameMap gamemap;
-    character hero;
-    GameType type;
-    std::vector<gameItem> buttonStack;
-    std::vector<gameItem> itemeditor_map;
-    std::vector<gameItem> gameitem;
-=======
 #include "campaign.hpp"
 #include <SDL2_ttf/SDL_ttf.h>
 #include "ItemContainer.hpp"
@@ -67,7 +52,6 @@ public:
     std::vector<gameItem> itemeditor_map;
     std::vector<gameItem> display_item;
 
->>>>>>> map-with-basic-gui
     SDL_Event e;
     SDL_Renderer *renderer;
     
@@ -78,34 +62,17 @@ public:
     void play();
     void render(SDL_Renderer *renderer);
 private:
-<<<<<<< HEAD
-    void manu_gui_event();
-    void Cmove();
-=======
     void mainMenu_gui_event();
     void charSelectMenuGuiEvent();
     void mapSelectMenuGuiEvent();
     void mapEditorControlButtonsHandler();
     void Cmove();
     void gamePlayHandler();
->>>>>>> map-with-basic-gui
     bool select=false;
     gameItem testimage;
     void ball();
     int selection();
     bool checkifinside(int x,int y,SDL_Rect dstrect);
-<<<<<<< HEAD
-    string address2[8]={
-        "/Users/oscar/Documents/xcode project/Assignment_1_COMP345/button1 copy.png",
-        "/Users/oscar/Documents/xcode project/Assignment_1_COMP345/button1 copy.png",
-        "/Users/oscar/Documents/xcode project/Assignment_1_COMP345/button1 copy.png",
-        "/Users/oscar/Documents/xcode project/Assignment_1_COMP345/button1 copy.png",
-        "/Users/oscar/Documents/xcode project/Assignment_1_COMP345/button1 copy.png",
-        "/Users/oscar/Documents/xcode project/Assignment_1_COMP345/button1 copy.png",
-        "/Users/oscar/Documents/xcode project/Assignment_1_COMP345/button1 copy.png",
-        "/Users/oscar/Documents/xcode project/Assignment_1_COMP345/button1 copy.png",
-    };
-=======
     
     //Nelson Edit:
     //changed filepath
@@ -135,7 +102,6 @@ private:
     // I made this variable to assist the charEditor and mapEditor types in render(). This should not be needed after refactoring properly
     //the name is totally arbitrary
     int ccc = 0;
->>>>>>> map-with-basic-gui
 };
 
 #endif /* game_hpp */

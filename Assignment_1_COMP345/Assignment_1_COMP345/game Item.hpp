@@ -15,11 +15,6 @@
 
 using namespace std;
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> map-with-basic-gui
 class gameItem{
 public:
     SDL_Surface * image;
@@ -30,8 +25,6 @@ public:
              SDL_Rect dstrect, string address);
     gameItem();
     void setImage(SDL_Renderer *renderer,string address);
-<<<<<<< HEAD
-=======
     void setMapNumber(int a);
     int  getMapNumber();
     void setMapIndex(int a);
@@ -40,6 +33,5 @@ private:
     int MapNumber;
     int MapIndex;
     
->>>>>>> map-with-basic-gui
 };
 #endif /* game_Item_hpp */

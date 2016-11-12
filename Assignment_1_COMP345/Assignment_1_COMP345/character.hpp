@@ -9,27 +9,16 @@
 #ifndef character_hpp
 #define character_hpp
 #include "game Item.hpp"
-<<<<<<< HEAD
-#include <stdio.h>
-
-=======
 #include "ItemContainer.hpp"
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
 #include "ItemBuilder.hpp"
 #include "Item.hpp"
->>>>>>> map-with-basic-gui
 class character :public gameItem{
 public:
     character();
     character(SDL_Renderer *renderer);
-<<<<<<< HEAD
-    int movecounter=0;
-    int Directioncounter=2;
-    int movestep=128;
-    
-=======
     void characterEdit();
     int movecounter=0;
     int Directioncounter=2;
@@ -51,6 +40,5 @@ public:
     int hitpoint;
     int level=1;
 private:
->>>>>>> map-with-basic-gui
 };
 #endif /* character_hpp */
