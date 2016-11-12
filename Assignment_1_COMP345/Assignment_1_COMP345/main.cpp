@@ -36,9 +36,10 @@ int main(int argc, const char * argv[]) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     
     game gametest=game(renderer,weigth,height);
-    gametest.gamemap=gameMap(weigth,height,renderer);
+    //gametest.Campaign.hero.equip();
+    //gametest.gamemap=gameMap(weigth,height,renderer);
 
-    bool quit=false;
+    bool quit=false;//controller
     //test
     /*
     TTF_Init();

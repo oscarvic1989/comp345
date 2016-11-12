@@ -42,6 +42,8 @@ public:
     int setOccupied(SDL_Rect, bool state);
     void setStart(int a);
     void setEnd(int a);
+    int startindex;
+    int endindex;
 private:
     //Nelson Edit:
     //rename nH, nV to be correct and English

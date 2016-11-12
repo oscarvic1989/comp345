@@ -14,6 +14,10 @@
 #include "character.hpp"
 #include "campaign.hpp"
 #include <SDL2_ttf/SDL_ttf.h>
+#include "ItemContainer.hpp"
+#include "Item.hpp"
+#include "ItemBuilder.hpp"
+#include "Enhancement.hpp"
 //Nelson Edit:
 //added types, changed manu to mainMenu
 enum GameType {
@@ -61,6 +65,7 @@ private:
     void mapSelectMenuGuiEvent();
     void mapEditorControlButtonsHandler();
     void Cmove();
+    void gamePlayHandler();
     bool select=false;
     gameItem testimage;
     void ball();

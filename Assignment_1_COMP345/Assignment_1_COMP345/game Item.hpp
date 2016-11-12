@@ -15,8 +15,6 @@
 
 using namespace std;
 
-
-
 class gameItem{
 public:
     SDL_Surface * image;

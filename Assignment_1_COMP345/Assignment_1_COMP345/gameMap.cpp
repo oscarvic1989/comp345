@@ -15,10 +15,10 @@ gameMap::gameMap(){
 }
 //mapuint :20*20
 gameMap::gameMap(int width, int length,SDL_Renderer *renderer){
-    int index=1;
+    int index=0;
     for(int i=0;i*defaultTileSize<length-defaultTileSize;i++){
         for(int j=0;j*defaultTileSize<width;j++){
-            mapUnit temp=*new mapUnit(j*defaultTileSize,i*defaultTileSize,renderer,index);
+            mapUnit temp=mapUnit(j*defaultTileSize,i*defaultTileSize,renderer,index);
             this->mapStack.push_back(temp);
             this->numberHorizontalElements=j;
             index++;
@@ -59,6 +59,8 @@ bool gameMap::mapValidateInit(){
     for(int i=0;this->mapStack.size();i++){
         if(mapStack[i].STATE==MAP_START)
         {
+            alreadyin.push_back(mapStack[i]);
+            cout<<"start point is"<<i<<endl;
             if(mapStack[i].getDown()!=NULL){
                 alreadyin.push_back(*mapStack[i].getDown());
                 dsfqueue.push_back(*mapStack[i].getDown());
@@ -83,7 +85,7 @@ bool gameMap::mapValidate(std::vector<mapUnit> a,std::vector<mapUnit> b){
     bool flag;
     mapUnit temp=a.back();
     a.pop_back();
-    std::cout<<temp.getIndex()<<"\n";
+    std::cout<<"current index is"<<temp.getIndex()<<"\n";
     if(temp.isOccupied()==true){
         flag=mapValidate(a,b) or flag;
     }
@@ -119,13 +121,17 @@ bool gameMap::mapValidate(std::vector<mapUnit> a,std::vector<mapUnit> b){
         flag=mapValidate(a,b) or flag;
     }
     else if(temp.isOccupied()==false&&temp.STATE==Map_END)
-        flag=true;
+    {
+      flag=true;
+        cout<<temp.getIndex()<<endl;
+    }
     return flag;
 };
+
 bool gameMap::stackContainElement(std::vector<mapUnit> a, mapUnit b){
     bool flag=false;
     for(int i=0;i<a.size();i++){
-        if(a[i].getIndex()==b.getIndex())
+        if(a[i].dstrect.x==b.dstrect.x and a[i].dstrect.y==b.dstrect.y)
         {
             flag= true;
             break;
@@ -133,6 +139,7 @@ bool gameMap::stackContainElement(std::vector<mapUnit> a, mapUnit b){
     }
     return flag;
 };
+
 int gameMap::getNumberVerticalElements(){
     return this->numberVerticalElements;
 }
