@@ -54,13 +54,13 @@ void gameMap::setOrder(){
 }
 
 bool gameMap::mapValidateInit(){
+    cout<<"start to validate map"<<endl;
     std::vector<mapUnit> dsfqueue;
     std::vector<mapUnit> alreadyin;
     for(int i=0;this->mapStack.size();i++){
         if(mapStack[i].STATE==MAP_START)
         {
             alreadyin.push_back(mapStack[i]);
-            cout<<"start point is"<<i<<endl;
             if(mapStack[i].getDown()!=NULL){
                 alreadyin.push_back(*mapStack[i].getDown());
                 dsfqueue.push_back(*mapStack[i].getDown());
@@ -123,7 +123,6 @@ bool gameMap::mapValidate(std::vector<mapUnit> a,std::vector<mapUnit> b){
     else if(temp.isOccupied()==false&&temp.STATE==Map_END)
     {
       flag=true;
-        cout<<temp.getIndex()<<endl;
     }
     return flag;
 };
@@ -173,7 +172,9 @@ int gameMap::setOccupied(SDL_Rect dstrect, bool val){
 }
 void gameMap::setStart(int a){
     this->mapStack[a].STATE=MAP_START;
+    this->startindex=a;
 }
 void gameMap::setEnd(int a){
     this->mapStack[a].STATE=Map_END;
+    this->endindex=a;
 }

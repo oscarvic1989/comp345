@@ -1,3 +1,0 @@
-0 testmap4
-1 testmap6
-end of file

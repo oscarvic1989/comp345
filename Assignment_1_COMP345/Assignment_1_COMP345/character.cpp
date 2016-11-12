@@ -169,7 +169,7 @@ void character::iniCharacterFromFile(string name,string b,string c){
     std::ifstream inputfile ("resources/campaign/"+name+".txt");
     string line;
     inputfile>>line;
-    this->name=line;
+    this->name=name;
     inputfile>>this->hitpoint>>this->level>>this->abilityScore[0]>>this->abilityScore[1]
     >>this->abilityScore[2]>>this->abilityScore[3]>>this->abilityScore[4]>>this->abilityScore[5];
     inputfile.close();

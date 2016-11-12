@@ -127,7 +127,6 @@ void game::render(SDL_Renderer *renderer){
         }
         case type_mapeditor:
         {
-            this->glowingSquare.dstrect=this->gamemap.mapStack[this->gamemap.endindex].dstrect;
             for(std::vector<mapUnit>::iterator it = this->gamemap.mapStack.begin() ; it != this->gamemap.mapStack.end(); ++it){
                 SDL_RenderCopy(renderer, it->texture,&it->srcrect, &it->dstrect);
                 //Update screen
@@ -143,8 +142,6 @@ void game::render(SDL_Renderer *renderer){
                 if(it->getMapNumber()==this->currentMapCounter){
                     SDL_RenderCopy(renderer, it->texture,&it->srcrect, &it->dstrect);
                 }
-                //Update screen
-                
             }
             for(std::vector<gameItem>::iterator it = this->CampaignEditorButtonStack.begin() ;
                 it != this->CampaignEditorButtonStack.end(); ++it){
@@ -301,6 +298,7 @@ void game::handleinput(){
             cin>>temp3;
             this->Campaign.hero.iniCharacterFromFile(temp,temp2,temp3);
             this->Campaign.hero.characterEdit();
+            this->type=type_mainMenu;
         }
             break;
         case type_itemEditor:
@@ -379,8 +377,33 @@ void game::mainMenu_gui_event(){
                                     inputfile>>n;
                                     a=m;
                                     b=n;
-                                    this->gamemap=gameMap(a*defaultTileSize, b*defaultTileSize, renderer);
-                                    inputfile.close();
+                                    gamemap=gameMap(a*defaultTileSize, b*defaultTileSize, renderer);
+                                    inputfile>>m;
+                                    inputfile>>n;
+                                    a=m;
+                                    b=n;
+                                    gamemap.setStart(a);
+                                    gamemap.setEnd(b);
+                                    bool flag=true;
+                                    while(flag){
+                                        inputfile>>m>>n;
+                                        a=m;b=n;
+                                        cout<<m<<endl;
+                                        if(a==9999 or b==9999)
+                                            break;
+                                        else if(n==1)
+                                            gamemap.mapStack[a].setOccupied();
+                                    }
+                                    while(inputfile.eof()){
+                                        inputfile>>n;
+                                        b=n;
+                                        cout<<b<<endl;
+                                        SDL_Rect srcrectTEMP={0,0,600,600};
+                                        gameItem testimage=gameItem(renderer, srcrectTEMP,
+                                                                    gamemap.mapStack[b].dstrect, "resources/ball.png");
+                                        testimage.setMapNumber(this->currentMapCounter);
+                                        this->Campaign.gameitem.push_back(testimage);
+                                    }
                                     this->type = type_mapeditor ;
                                     break;
                                 }
@@ -480,6 +503,7 @@ void game::charSelectMenuGuiEvent(){
     }
     SDL_FlushEvents(1025,1026); //Fixes specific bug which would cause things to trigger twice.
 }
+
 void game::mapSelectMenuGuiEvent(){
     SDL_WaitEvent(&e);
     bool inside = false;
@@ -502,24 +526,84 @@ void game::mapSelectMenuGuiEvent(){
             case 1:
             {
                 cout <<"Please enter the name of new campaign";
+                this->Campaign=campaign(renderer);
                 string name;
                 cin>>name;
                 this->Campaign.setName(name);
-                
-                cout<<"Please enter the width of the new Map"<<endl;
-                int tempw=0;
-                cin>>tempw;
-                cout<<"Please enter the height of the new Map"<<endl;
-                int temph=0;
-                cin>>temph;
-                this->gamemap=gameMap(tempw,temph,this->renderer);
-                this->type = type_mapeditor;
-            }
+                cout<<"enter 1 to create a new map or enter 2 to load map"<<endl;
+                int flag;
+                cin>>flag;
+                switch (flag) {
+                    case 1:
+                    {
+                        cout<<"Please enter the width of the new Map"<<endl;
+                        int tempw=0;
+                        cin>>tempw;
+                        cout<<"Please enter the height of the new Map"<<endl;
+                        int temph=0;
+                        cin>>temph;
+                        this->gamemap=gameMap(tempw,temph,this->renderer);
+                        this->type = type_mapeditor;
+                        break;
+                    }
+                    case 2:{
+                        {
+                            cout<<"Please choose maps:"<<endl;
+                            string address;
+                            cin>>address;
+                            std::ifstream inputfile("resources/save_maps/"+address+".txt");
+                            int m,n;
+                            int a,b;
+                            inputfile>>m;
+                            inputfile>>n;
+                            a=m;
+                            b=n;
+                            gamemap=gameMap(a*defaultTileSize, b*defaultTileSize, renderer);
+                            inputfile>>m;
+                            inputfile>>n;
+                            a=m;
+                            b=n;
+                            gamemap.setStart(a);
+                            gamemap.setEnd(b);
+                            bool flag=true;
+                            while(flag){
+                                inputfile>>m>>n;
+                                a=m;b=n;
+                                cout<<m<<endl;
+                                if(a==9999)
+                                    break;
+                                else if(n==1)
+                                    gamemap.mapStack[a].setOccupied();
+                            }
+                            this->Campaign.gameMapStack.push_back(gamemap);
+                            while(!inputfile.eof()){
+                                inputfile>>n;
+                                b=n;
+                                cout<<b<<endl;
+                                SDL_Rect srcrectTEMP={0,0,600,600};
+                                gameItem testimage=gameItem(renderer, srcrectTEMP,
+                                                            gamemap.mapStack[b].dstrect, "resources/ball.png");
+                                testimage.setMapNumber(this->currentMapCounter);
+                                this->Campaign.gameitem.push_back(testimage);
+                            }
+                            this->Campaign.hero.dstrect=this->Campaign.gameMapStack[0].mapStack[this->Campaign.gameMapStack[0].startindex].dstrect;
+                            this->type = type_mapeditor ;
+                            break;
+                            
+                        }
+
+                    }
+                        break;
+                    default:
+                        break;
+                }
+              }
                 break;
             case 0:
                 {
                     //start Map load code here:
                     cout <<"Please choose the campaign";
+                    this->Campaign=campaign(renderer);
                     string name;
                     cin>>name;
                     this->Campaign.setName(name);
@@ -562,21 +646,24 @@ void game::mapSelectMenuGuiEvent(){
                             inputfile>>m>>n;
                             a=m;b=n;
                             cout<<m<<endl;
-                            if(a==9999 or b==9999)
+                            if(a==9999)
                                 break;
                             else if(n==1)
-                                gamemap.mapStack[a].setOccupied();
+                            {
+                             gamemap.mapStack[a].setOccupied();   
+                            }
                         }
                         if(!gamemap.mapValidateInit())
                         {
-                          cout<<"chech the map";
+                          cout<<"check the map";
                             this->type=type_mainMenu;
                           break;
                         }
                         this->Campaign.gameMapStack.push_back(gamemap);
-                        while(inputfile>>n){
+                        while(!inputfile.eof()){
+                            inputfile>>n;
                             b=n;
-                            cout<<b<<endl;
+                            cout<<"At "<<b<<"there is a item"<<endl;
                             SDL_Rect srcrectTEMP={0,0,600,600};
                             gameItem testimage=gameItem(renderer, srcrectTEMP,
                                                         gamemap.mapStack[b].dstrect, "resources/ball.png");
@@ -643,7 +730,7 @@ void game::mapEditorControlButtonsHandler(){
                         outfile<<i<<" "<<
                         this->gamemap.mapStack[i].isOccupied()<<endl;
                     }
-                    outfile<<"9999"<<endl;
+                    outfile<<"9999"<<" "<<"9999"<<endl;
                     for(int j=0;j<this->Campaign.gameitem.size();j++){
                         if(this->Campaign.gameitem[j].getMapNumber()==this->currentMapCounter)
                             outfile<<this->currentMapCounter<<" "
@@ -664,7 +751,7 @@ void game::mapEditorControlButtonsHandler(){
                 }
                 outfile2.close();
                 this->currentMapCounter=0;
-                
+                this->Campaign=campaign(renderer);
                 this->type=type_mainMenu;
 
             }
@@ -702,7 +789,7 @@ void game::mapEditorControlButtonsHandler(){
                         outfile<<i<<" "<<
                         this->gamemap.mapStack[i].isOccupied()<<endl;
                     }
-                    outfile<<9999<<endl;
+                    outfile<<"9999"<<" "<<"9999"<<endl;
                     for(int j=0;j<this->Campaign.gameitem.size();j++){
                         if(this->Campaign.gameitem[j].getMapNumber()==this->currentMapCounter)
                             outfile<<this->Campaign.gameitem[j].getMapIndex()<<endl;

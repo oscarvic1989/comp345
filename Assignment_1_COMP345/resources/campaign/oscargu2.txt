@@ -1,2 +1,1 @@
-map00051
-map00052
+testmap4

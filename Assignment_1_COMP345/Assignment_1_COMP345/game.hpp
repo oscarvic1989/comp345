@@ -50,6 +50,8 @@ public:
     gameItem glowingSquare;
     
     std::vector<gameItem> itemeditor_map;
+    std::vector<gameItem> display_item;
+
     SDL_Event e;
     SDL_Renderer *renderer;
     
