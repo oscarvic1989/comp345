@@ -166,7 +166,8 @@ void game::render(SDL_Renderer *renderer){
                 to_string(this->Campaign.hero.level).c_str(),
                 to_string(this->Campaign.hero.hitpoint).c_str(),
             };
-          
+            
+            this->Campaign.hero.InventoryPane->displayItems();
             
             SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, pchar[0], White);
             
@@ -388,7 +389,7 @@ void game::mainMenu_gui_event(){
                                     while(flag){
                                         inputfile>>m>>n;
                                         a=m;b=n;
-                                        cout<<m<<endl;
+                                        //cout<<m<<endl;
                                         if(a==9999 or b==9999)
                                             break;
                                         else if(n==1)
@@ -397,7 +398,7 @@ void game::mainMenu_gui_event(){
                                     while(inputfile.eof()){
                                         inputfile>>n;
                                         b=n;
-                                        cout<<b<<endl;
+                                        //cout<<b<<endl;
                                         SDL_Rect srcrectTEMP={0,0,600,600};
                                         gameItem testimage=gameItem(renderer, srcrectTEMP,
                                                                     gamemap.mapStack[b].dstrect, "resources/ball.png");
@@ -569,7 +570,7 @@ void game::mapSelectMenuGuiEvent(){
                             while(flag){
                                 inputfile>>m>>n;
                                 a=m;b=n;
-                                cout<<m<<endl;
+                                //cout<<m<<endl;
                                 if(a==9999)
                                     break;
                                 else if(n==1)
@@ -579,7 +580,7 @@ void game::mapSelectMenuGuiEvent(){
                             while(!inputfile.eof()){
                                 inputfile>>n;
                                 b=n;
-                                cout<<b<<endl;
+                                //cout<<b<<endl;
                                 SDL_Rect srcrectTEMP={0,0,600,600};
                                 gameItem testimage=gameItem(renderer, srcrectTEMP,
                                                             gamemap.mapStack[b].dstrect, "resources/ball.png");
@@ -645,7 +646,7 @@ void game::mapSelectMenuGuiEvent(){
                         while(flag){
                             inputfile>>m>>n;
                             a=m;b=n;
-                            cout<<m<<endl;
+                            //cout<<m<<endl;
                             if(a==9999)
                                 break;
                             else if(n==1)
@@ -656,7 +657,8 @@ void game::mapSelectMenuGuiEvent(){
                         if(!gamemap.mapValidateInit())
                         {
                           cout<<"check the map";
-                            this->type=type_mainMenu;
+                          this->type=type_mainMenu;
+                            exit(0);
                           break;
                         }
                         this->Campaign.gameMapStack.push_back(gamemap);
@@ -733,8 +735,7 @@ void game::mapEditorControlButtonsHandler(){
                     outfile<<"9999"<<" "<<"9999"<<endl;
                     for(int j=0;j<this->Campaign.gameitem.size();j++){
                         if(this->Campaign.gameitem[j].getMapNumber()==this->currentMapCounter)
-                            outfile<<this->currentMapCounter<<" "
-                            <<this->Campaign.gameitem[j].getMapIndex()<<endl;
+                            outfile<<this->Campaign.gameitem[j].getMapIndex()<<endl;
                     }
                 }
                 outfile.close();

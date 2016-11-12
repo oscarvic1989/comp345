@@ -43,12 +43,14 @@ void gameMap::setOrder(){
     }
     for(int i=0;i<this->numberHorizontalElements;i++){
         for(int j=0;j<this->numberVerticalElements-1;j++){
-            mapStack[j*(this->numberHorizontalElements-1)+i].setDown(&mapStack[j*(this->numberHorizontalElements-1)+i+8]);
+            mapStack[j*(this->numberHorizontalElements)+i].setDown(&mapStack[j*(this->numberHorizontalElements)+i+this->numberHorizontalElements]);
         }
     }
     for(int i=this->numberHorizontalElements-1;i>=0;i--){
         for(int j=this->numberVerticalElements-1;j>0;j--){
-            mapStack[j*(this->numberHorizontalElements)+i].setUp(&mapStack[j*(this->numberHorizontalElements)+i-8]);
+            cout<<"current index is "<<j*(this->numberHorizontalElements)+i<<endl;
+            cout<<"up is "<<j*(this->numberHorizontalElements)+i-this->numberHorizontalElements<<endl;
+            mapStack[j*(this->numberHorizontalElements)+i].setUp(&mapStack[j*(this->numberHorizontalElements)+i-this->numberHorizontalElements]);
         }
     }
 }
@@ -60,6 +62,7 @@ bool gameMap::mapValidateInit(){
     for(int i=0;this->mapStack.size();i++){
         if(mapStack[i].STATE==MAP_START)
         {
+            cout<<"START INDEX IS "<<i<<endl;
             alreadyin.push_back(mapStack[i]);
             if(mapStack[i].getDown()!=NULL){
                 alreadyin.push_back(*mapStack[i].getDown());
@@ -83,6 +86,8 @@ bool gameMap::mapValidateInit(){
 
 bool gameMap::mapValidate(std::vector<mapUnit> a,std::vector<mapUnit> b){
     bool flag;
+    if(a.size()==0)
+        return false;
     mapUnit temp=a.back();
     a.pop_back();
     std::cout<<"current index is"<<temp.getIndex()<<"\n";
