@@ -11,6 +11,91 @@
 character::character(){
     
 }
+void character::characterEdit(){
+    bool flag=true;
+    while(flag){
+        cout<<"Please choose which value you wish to change:"<<endl;
+        cout<<"<0>Name"<<endl;
+        cout<<"<1>Hitpoint"<<endl;
+        cout<<"<2>level"<<endl;
+        cout<<"<3>Strength"<<endl;
+        cout<<"<4>Dexerity"<<endl;
+        cout<<"<5>Constitution"<<endl;
+        cout<<"<6>Intelligence"<<endl;
+        cout<<"<7>Wisdon"<<endl;
+        cout<<"<8>Charisma"<<endl;
+        int temppointer;
+        cin>>temppointer;
+        switch (temppointer) {
+            case 0:
+                cout<<"Please enter new name:"<<endl;
+                cin>>this->name;
+                cout<<"New name is :"<<this->name<<endl;
+                break;
+            case 1:
+                cout<<"Please enter value of hitpoint:"<<endl;
+                cin>>this->hitpoint;
+                cout<<"New value is :"<<this->hitpoint<<endl;
+                break;
+            case 2:
+                cout<<"Please enter new level:"<<endl;
+                cin>>this->level;
+                cout<<"New value is :"<<this->level<<endl;
+                break;
+            case 3:
+                cout<<"Please enter new value:"<<endl;
+                cin>>this->abilityScore[0];
+                cout<<"New value is :"<<this->level<<endl;
+                break;
+            case 4:
+                cout<<"Please enter new value:"<<endl;
+                cin>>this->abilityScore[1];
+                cout<<"New value is :"<<this->level<<endl;
+                break;
+            case 5:
+                cout<<"Please enter new value:"<<endl;
+                cin>>this->abilityScore[2];
+                cout<<"New value is :"<<this->level<<endl;
+                break;
+            case 6:
+                cout<<"Please enter new value:"<<endl;
+                cin>>this->abilityScore[3];
+                cout<<"New value is :"<<this->level<<endl;
+                break;
+            case 7:
+                cout<<"Please enter new value:"<<endl;
+                cin>>this->abilityScore[4];
+                cout<<"New value is :"<<this->level<<endl;
+                break;
+            case 8:
+                cout<<"Please enter new value:"<<endl;
+                cin>>this->abilityScore[5];
+                cout<<"New value is :"<<this->level<<endl;
+                break;
+            default:
+                break;
+        }
+        cout<<"Enter 1 to continue , 2 to save and exit"<<endl;
+        int hahaha;
+        cin>>hahaha;
+        if(hahaha==2)
+            flag=false;
+    }
+    cout<<"Saving..."<<endl;
+    std::ofstream outfile ("resources/save_character/"+this->name+".txt");
+    outfile<<this->name<<endl;
+    outfile<<this->hitpoint<<endl;
+    outfile<<this->level<<endl;
+    outfile<<this->abilityScore[0]<<endl;
+    outfile<<this->abilityScore[1]<<endl;
+    outfile<<this->abilityScore[2]<<endl;
+    outfile<<this->abilityScore[3]<<endl;
+    outfile<<this->abilityScore[4]<<endl;
+    outfile<<this->abilityScore[5]<<endl;
+    outfile<<this->abilityScore[6]<<endl;
+    cout<<"Done"<<endl;
+    outfile.close();
+}
 character::character(SDL_Renderer *renderer){
     this->dstrect={0,0,50,50};
     this->srcrect={movecounter*movestep,Directioncounter*movestep,128,128};

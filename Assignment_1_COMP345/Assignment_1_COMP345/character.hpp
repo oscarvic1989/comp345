@@ -19,6 +19,7 @@ class character :public gameItem{
 public:
     character();
     character(SDL_Renderer *renderer);
+    void characterEdit();
     int movecounter=0;
     int Directioncounter=2;
     int movestep=128;

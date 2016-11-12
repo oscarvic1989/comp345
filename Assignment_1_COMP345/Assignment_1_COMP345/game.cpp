@@ -289,6 +289,20 @@ void game::handleinput(){
             break;
             
         case type_characterEditor:
+        {
+            cout<<"Please enter file of you character";
+            string temp;
+            cin>>temp;
+            cout<<"Please enter file inventory file";
+            string temp2;
+            cin>>temp2;
+            cout<<"Please enter file of you backpack file";
+            string temp3;
+            cin>>temp3;
+            this->Campaign.hero.iniCharacterFromFile(temp,temp2,temp3);
+            this->Campaign.hero.characterEdit();
+        }
+            break;
         case type_itemEditor:
         case type_mapFileLoad:
         case type_characterFileLoad:
@@ -889,6 +903,7 @@ void game::Cmove(){
         else{
             this->Campaign.hero.dstrect=this->Campaign.gameMapStack[this->currentMapCounter].mapStack[this->Campaign.gameMapStack[this->currentMapCounter].startindex].dstrect;
             this->glowingSquare.dstrect=this->Campaign.gameMapStack[this->currentMapCounter].mapStack[this->Campaign.gameMapStack[this->currentMapCounter].endindex].dstrect;
+            this->Campaign.hero.level++;
             }
     }
 }
