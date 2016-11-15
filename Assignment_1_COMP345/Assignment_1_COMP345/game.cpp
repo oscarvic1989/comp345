@@ -11,7 +11,7 @@
 game::game(){
     
 }
-
+const int gridSize = 100;
 //button loading
 game::game(SDL_Renderer *renderer,int w,int h){
     hero=character(renderer);
@@ -258,12 +258,17 @@ int game::selection(){
     SDL_WaitEvent(&e);
     int x = 0, y = 0;
     SDL_GetMouseState(&x, &y);
+    
+    //convert x,y to integer
     x=x/100*100;
     y=y/100*100;
+    
     if(y>500&&(e.button.button == SDL_BUTTON_LEFT))
     {
         cout<<x/100;
         select=true;
+        
+        //return x coordinate of selected ball
         return x/100;
     }
     else
